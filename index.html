@@ -13,37 +13,37 @@
 
     <div class="grain-container"></div>
 
-    <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 p-1 glass rounded-full shadow-2xl">
+    <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 p-1 glass rounded-full shadow-2xl w-[90%] max-w-md sm:w-auto">
         <div class="px-4 py-2 bg-blue-600/20 text-blue-400 rounded-full font-bold text-xs">AJN</div>
         <div class="flex gap-1 px-2">
-            <a href="#home" class="px-4 py-2 text-sm hover:text-blue-400 transition">Home</a>
-            <a href="#about" class="px-4 py-2 text-sm hover:text-blue-400 transition">About</a>
-            <a href="#projects" class="px-4 py-2 text-sm hover:text-blue-400 transition">Projects</a>
-            <a href="#stack" class="px-4 py-2 text-sm hover:text-blue-400 transition">Stack</a>
-            <a href="#contact" class="px-4 py-2 text-sm hover:text-blue-400 transition">Contact</a>
+            <a href="#home" class="px-3 py-2 text-xs sm:text-sm hover:text-blue-400 transition">Home</a>
+            <a href="#about" class="px-3 py-2 text-xs sm:text-sm hover:text-blue-400 transition">About</a>
+            <a href="#projects" class="px-3 py-2 text-xs sm:text-sm hover:text-blue-400 transition">Projects</a>
+            <a href="#stack" class="px-3 py-2 text-xs sm:text-sm hover:text-blue-400 transition">Stack</a>
+            <a href="#contact" class="px-3 py-2 text-xs sm:text-sm hover:text-blue-400 transition">Contact</a>
         </div>
     </nav>
 
     <section id="home" class="relative min-h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden circuit-bg">
-        <div class="absolute w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] -z-10"></div>
-        <h1 class="text-6xl md:text-8xl font-bold tracking-tighter mb-4 animate-pulse">
+        <div class="absolute w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-blue-600/10 rounded-full blur-[120px] -z-10"></div>
+        <h1 class="text-4xl md:text-8xl font-bold tracking-tighter mb-4 headline-fade">
             Andrei Jullian Nacaya
         </h1>
-        <p class="text-blue-400 text-xl md:text-2xl font-medium mb-6 uppercase tracking-widest">
+        <p class="text-blue-400 text-lg md:text-2xl font-medium mb-6 uppercase tracking-widest">
             Full-Stack Web & Mobile Developer
         </p>
-        <p class="max-w-2xl text-gray-400 text-lg mb-10 leading-relaxed">
+        <p class="max-w-2xl text-gray-400 text-base md:text-lg mb-10 leading-relaxed">
             Building production-ready systems — from beautiful front-ends to scalable backend architectures.
         </p>
-        <div class="flex flex-col sm:flex-row gap-4">
+        <div class="flex flex-col sm:flex-row gap-4 z-10">
             <a href="#projects" class="bg-blue-600 hover:bg-blue-500 px-8 py-3 rounded-full font-bold shadow-[0_0_25px_rgba(37,99,235,0.4)] transition-all transform hover:scale-105 text-center">
                 View Projects
             </a>
-            <button class="glass px-8 py-3 rounded-full font-bold hover:bg-white/10 transition-all">
-                Chat With AI
-            </button>
+            <a href="#contact" class="glass px-8 py-3 rounded-full font-bold hover:bg-white/10 transition-all text-center">
+                Let's Talk
+            </a>
         </div>
-        <div class="absolute bottom-10 w-full flex justify-center gap-8 opacity-30 grayscale hover:opacity-100 transition-all duration-700 overflow-x-auto px-10">
+        <div class="absolute bottom-10 w-full flex justify-center gap-8 opacity-30 grayscale hover:opacity-100 transition-all duration-700 overflow-x-auto px-10 whitespace-nowrap">
             <span>JavaScript</span><span>TypeScript</span><span>React</span><span>Node.js</span><span>Tailwind</span>
         </div>
     </section>
@@ -51,106 +51,176 @@
     <section id="about" class="py-32 px-6 max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-center">
         <div class="lg:w-1/2">
             <span class="bg-blue-900/30 text-blue-400 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest">About Me</span>
-            <h2 class="text-5xl font-bold mt-6 mb-8 leading-tight">
+            <h2 class="text-3xl md:text-5xl font-bold mt-6 mb-8 leading-tight">
                 Bridging the gap between <span class="text-blue-500 text-opacity-80">customer service</span> and <span class="text-indigo-400">clean code</span>.
             </h2>
-            <p class="text-gray-400 text-lg mb-8 leading-relaxed">
+            <p class="text-gray-400 text-base md:text-lg mb-8 leading-relaxed">
                 I'm a transitioner from the high-pressure hospitality industry to the world of Full-Stack development. My background as a barista and bartender taught me precision, efficiency, and how to deliver under stress—skills I now apply to building scalable web applications.
             </p>
-            <div class="grid grid-cols-2 gap-8 border-t border-white/10 pt-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 border-t border-white/10 pt-8">
                 <div>
                     <h4 class="font-bold text-white mb-2">Specializations</h4>
                     <p class="text-sm text-gray-400">UI/UX Design, Front-end Logic, Rapid Prototyping.</p>
                 </div>
                 <div>
                     <h4 class="font-bold text-white mb-2">Certificates</h4>
-                    <p class="text-sm text-gray-400">IT Management Fundamentals 101, Python Programming 101, Strategic Project Management & Design Thinking, Web Development Workshop; HTML,CSS,Basic Javascript & Github.</p>
+                    <p class="text-sm text-gray-400">IT Management Fundamentals 101, Python Programming 101, Strategic Project Management & Design Thinking, Web Development Workshop.</p>
                 </div>
             </div>
         </div>
-        <div class="lg:w-1/2 grid grid-cols-2 gap-4 bg-white/[0.02] p-8 rounded-[40px] border border-white/5">
-            <div class="glass p-10 rounded-3xl text-center">
-                <h3 class="text-4xl font-bold mb-2">100%</h3>
+        <div class="lg:w-1/2 grid grid-cols-2 gap-4 bg-white/[0.02] p-4 sm:p-8 rounded-[40px] border border-white/5 w-full">
+            <div class="glass p-6 sm:p-10 rounded-3xl text-center">
+                <h3 class="text-3xl sm:text-4xl font-bold mb-2">100%</h3>
                 <p class="text-[10px] text-gray-500 uppercase tracking-widest">Growth Mindset</p>
             </div>
-            <div class="glass p-10 rounded-3xl text-center">
-                <h3 class="text-4xl font-bold mb-2">5+</h3>
+            <div class="glass p-6 sm:p-10 rounded-3xl text-center">
+                <h3 class="text-3xl sm:text-4xl font-bold mb-2">5+</h3>
                 <p class="text-[10px] text-gray-500 uppercase tracking-widest">Certificates</p>
             </div>
-            <div class="glass p-10 rounded-3xl text-center">
-                <h3 class="text-4xl font-bold mb-2">3+</h3>
+            <div class="glass p-6 sm:p-10 rounded-3xl text-center">
+                <h3 class="text-3xl sm:text-4xl font-bold mb-2">3+</h3>
                 <p class="text-[10px] text-gray-500 uppercase tracking-widest">Live Projects</p>
             </div>
-            <div class="glass p-10 rounded-3xl text-center">
-                <h3 class="text-4xl font-bold mb-2">24/7</h3>
+            <div class="glass p-6 sm:p-10 rounded-3xl text-center">
+                <h3 class="text-3xl sm:text-4xl font-bold mb-2">24/7</h3>
                 <p class="text-[10px] text-gray-500 uppercase tracking-widest">Dedicated Learner</p>
             </div>
         </div>
     </section>
 
-    <section id="projects" class="relative h-screen w-full overflow-hidden flex items-center justify-center transition-colors duration-700 ease-out bg-[#030303]">
-        
+    <section id="projects" class="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-start pt-24 pb-32 transition-colors duration-700 ease-out bg-[#030303]">
         <div id="carousel-glow" class="absolute w-[500px] h-[500px] rounded-full blur-[160px] opacity-20 -z-10 transition-colors duration-700"></div>
 
-        <div class="absolute inset-0 flex items-center justify-center select-none pointer-events-none z-0 overflow-hidden">
-            <h2 class="font-['Anton'] uppercase text-white/[0.02] text-center leading-none tracking-tighter scale-y-110" style="font-size: clamp(8rem, 22vw, 32rem);">
+        <div class="absolute inset-0 flex items-center justify-center select-none pointer-events-none z-0 overflow-hidden max-h-[600px]">
+            <h2 class="font-['Anton'] uppercase text-white/[0.02] text-center leading-none tracking-tighter scale-y-110" style="font-size: clamp(6rem, 22vw, 32rem);">
                 PROJECTS
             </h2>
         </div>
 
-        <div id="carousel-container" class="relative w-full max-w-7xl h-[550px] flex items-center justify-center px-4 z-10">
-            </div>
+        <div id="carousel-container" class="relative w-full max-w-7xl h-[480px] flex items-center justify-center px-4 z-10"></div>
 
-        <div class="absolute bottom-12 left-0 w-full px-8 md:px-16 flex justify-between items-end z-20 pointer-events-none">
-            
-            <div class="flex gap-4 pointer-events-auto">
-                <button id="prev-btn" class="w-14 h-14 rounded-full border border-blue-500/20 bg-blue-950/10 backdrop-blur-md flex items-center justify-center text-blue-400 hover:bg-blue-600 hover:text-white hover:border-blue-500 hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all duration-300 transform active:scale-95" aria-label="Previous Project">
-                    <svg class="w-6 h-6 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+        <div class="w-full max-w-7xl px-6 md:px-16 flex justify-between items-center z-20 mt-4 mb-12">
+            <div class="flex gap-4">
+                <button id="prev-btn" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-blue-500/20 bg-blue-950/10 backdrop-blur-md flex items-center justify-center text-blue-400 hover:bg-blue-600 hover:text-white hover:border-blue-500 hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all duration-300 transform active:scale-95" aria-label="Previous Project">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
                         <path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
-                <button id="next-btn" class="w-14 h-14 rounded-full border border-blue-500/20 bg-blue-950/10 backdrop-blur-md flex items-center justify-center text-blue-400 hover:bg-blue-600 hover:text-white hover:border-blue-500 hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all duration-300 transform active:scale-95" aria-label="Next Project">
-                    <svg class="w-6 h-6 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+                <button id="next-btn" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-blue-500/20 bg-blue-950/10 backdrop-blur-md flex items-center justify-center text-blue-400 hover:bg-blue-600 hover:text-white hover:border-blue-500 hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all duration-300 transform active:scale-95" aria-label="Next Project">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
                         <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
             </div>
 
-            <a href="https://1erdna.github.io/christmas/" target="_blank" class="pointer-events-auto group overflow-hidden border border-blue-500/20 bg-blue-950/20 backdrop-blur-sm py-3 px-6 rounded-full max-w-xs flex items-center transition-all hover:border-blue-400 hover:shadow-[0_0_15px_rgba(37,99,235,0.2)]">
+            <a id="project-marquee-link" href="#" class="group overflow-hidden border border-blue-500/20 bg-blue-950/20 backdrop-blur-sm py-3 px-6 rounded-full max-w-[180px] sm:max-w-xs flex items-center transition-all hover:border-blue-400 hover:shadow-[0_0_15px_rgba(37,99,235,0.2)]">
                 <div class="marquee-track flex whitespace-nowrap gap-4 font-['Anton'] tracking-wider text-xs uppercase text-blue-400 group-hover:text-blue-300">
-                    <span>CLICK ↗ &nbsp;&nbsp; CLICK ↗ &nbsp;&nbsp; CLICK ↗</span>
-                    <span aria-hidden="true">CLICK ↗ &nbsp;&nbsp; CLICK ↗ &nbsp;&nbsp; CLICK ↗</span>
+                    <span>VIEW LIVE ↗ &nbsp;&nbsp; VIEW LIVE ↗ &nbsp;&nbsp; VIEW LIVE ↗</span>
+                    <span aria-hidden="true">VIEW LIVE ↗ &nbsp;&nbsp; VIEW LIVE ↗ &nbsp;&nbsp; VIEW LIVE ↗</span>
                 </div>
             </a>
         </div>
+
+        <div class="relative w-full max-w-7xl px-6 md:px-16 z-20 mt-8 border-t border-white/5 pt-12">
+            <h3 class="text-xl font-bold tracking-tight text-white mb-6 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-blue-500"></span> Archive
+            </h3>
+            <div id="archive-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
+        </div>
     </section>
+
+    <div id="project-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-500 ease-out bg-[#030303]/80 backdrop-blur-xl">
+        <div class="relative w-full max-w-5xl h-[85vh] md:h-[75vh] bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden flex flex-col md:flex-row shadow-[0_0_50px_rgba(0,0,0,0.8)] opacity-0 scale-95 transition-all duration-500 cubic-bezier(0.25, 1, 0.5, 1)" id="modal-content">
+            
+            <button id="modal-close" class="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-black/40 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <div class="w-full md:w-3/5 h-1/2 md:h-full bg-black/40 flex flex-col justify-between p-6 border-b md:border-b-0 md:border-r border-white/5 relative">
+                <div class="flex-grow flex items-center justify-center overflow-hidden rounded-2xl border border-white/5 bg-white/[0.01] p-4">
+                    <img id="modal-main-img" src="" alt="Showcase layout viewport" class="max-w-full max-h-full object-contain filter drop-shadow-2xl select-none">
+                </div>
+                <div id="modal-thumbs-track" class="flex gap-3 mt-4 overflow-x-auto py-1 whitespace-nowrap min-h-[60px]"></div>
+            </div>
+
+            <div class="w-full md:w-2/5 h-1/2 md:h-full p-6 sm:p-8 flex flex-col justify-between overflow-y-auto bg-gradient-to-b from-transparent to-white/[0.01]">
+                <div class="flex flex-col gap-4">
+                    <div>
+                        <span id="modal-tag" class="font-['Anton'] tracking-widest text-xs text-blue-400 uppercase"></span>
+                        <h3 id="modal-title" class="font-['Anton'] text-2xl sm:text-4xl uppercase tracking-tight text-white mt-1 leading-none"></h3>
+                    </div>
+                    <div class="w-full h-px bg-white/5"></div>
+                    <div>
+                        <h4 class="text-xs uppercase tracking-wider text-gray-500 font-bold mb-1">Project Details</h4>
+                        <p id="modal-desc" class="text-sm font-normal text-gray-400 leading-relaxed font-sans"></p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-4 mt-8">
+                    <div id="modal-specs-box" class="flex flex-wrap gap-2"></div>
+                    <a id="modal-action-btn" href="#" target="_blank" class="w-full bg-blue-600 hover:bg-blue-500 py-4 rounded-xl font-bold shadow-[0_0_25px_rgba(37,99,235,0.3)] hover:shadow-[0_0_35px_rgba(37,99,235,0.5)] text-center transition transform active:scale-[0.98] flex items-center justify-center gap-2 text-sm text-white">
+                        Launch Live Application <i data-lucide="external-link" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
     <section id="stack" class="py-32 px-6 max-w-7xl mx-auto">
         <h2 class="text-4xl font-bold text-center mb-4">Technical Arsenal</h2>
         <p class="text-gray-400 text-center mb-16">The tools and technologies I use to build solutions.</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="glass p-8 rounded-3xl hover:border-blue-500/50 transition duration-500 group">
                 <div class="w-10 h-10 mb-6 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400 group-hover:scale-110 transition">💻</div>
-                <h3 class="font-bold mb-4">Frontend</h3>
+                <h3 class="font-bold mb-4 text-lg">Frontend</h3>
                 <div class="flex flex-wrap gap-2">
                     <span class="bg-white/5 px-3 py-1 rounded-md text-xs border border-white/5">React</span>
                     <span class="bg-white/5 px-3 py-1 rounded-md text-xs border border-white/5">Tailwind</span>
-                    <span class="bg-white/5 px-3 py-1 rounded-md text-xs border border-white/5">HTML/CSS</span>
                     <span class="bg-white/5 px-3 py-1 rounded-md text-xs border border-white/5">JavaScript</span>
+                    <span class="bg-white/5 px-3 py-1 rounded-md text-xs border border-white/5">TypeScript</span>
+                </div>
+            </div>
+            <div class="glass p-8 rounded-3xl hover:border-indigo-500/50 transition duration-500 group">
+                <div class="w-10 h-10 mb-6 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition">⚙️</div>
+                <h3 class="font-bold mb-4 text-lg">Backend</h3>
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-white/5 px-3 py-1 rounded-md text-xs border border-white/5">Node.js</span>
+                    <span class="bg-white/5 px-3 py-1 rounded-md text-xs border border-white/5">Express</span>
+                    <span class="bg-white/5 px-3 py-1 rounded-md text-xs border border-white/5">Python</span>
+                    <span class="bg-white/5 px-3 py-1 rounded-md text-xs border border-white/5">REST APIs</span>
+                </div>
+            </div>
+            <div class="glass p-8 rounded-3xl hover:border-purple-500/50 transition duration-500 group">
+                <div class="w-10 h-10 mb-6 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-400 group-hover:scale-110 transition">📱</div>
+                <h3 class="font-bold mb-4 text-lg">Mobile & Data</h3>
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-white/5 px-3 py-1 rounded-md text-xs border border-white/5">React Native</span>
+                    <span class="bg-white/5 px-3 py-1 rounded-md text-xs border border-white/5">Local Storage</span>
+                    <span class="bg-white/5 px-3 py-1 rounded-md text-xs border border-white/5">JSON Structures</span>
+                </div>
+            </div>
+            <div class="glass p-8 rounded-3xl hover:border-emerald-500/50 transition duration-500 group">
+                <div class="w-10 h-10 mb-6 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition">🛠️</div>
+                <h3 class="font-bold mb-4 text-lg">Workflow</h3>
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-white/5 px-3 py-1 rounded-md text-xs border border-white/5">Git / GitHub</span>
+                    <span class="bg-white/5 px-3 py-1 rounded-md text-xs border border-white/5">Design Thinking</span>
+                    <span class="bg-white/5 px-3 py-1 rounded-md text-xs border border-white/5">Agile Basics</span>
                 </div>
             </div>
         </div>
     </section>
 
     <section id="contact" class="py-32 px-6 max-w-7xl mx-auto">
-        <h2 class="text-5xl font-bold text-center mb-16 text-white">Get In Touch</h2>
+        <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 text-white">Get In Touch</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
             <a href="mailto:anacaya331@gmail.com" class="group p-8 rounded-3xl bg-[#0a0a0a] border border-white/5 hover:border-blue-500/50 transition-all duration-300">
                 <div class="w-12 h-12 mx-auto mb-6 flex items-center justify-center rounded-xl bg-blue-500/5 border border-blue-500/10 text-blue-400 group-hover:scale-110 group-hover:border-blue-500 group-hover:shadow-[0_0_20px_rgba(37,99,235,0.3)] transition-all duration-500">
                     <i data-lucide="mail" class="w-6 h-6"></i>
                 </div>
                 <p class="text-[10px] tracking-[4px] uppercase text-gray-500 mb-4">Email</p>
-                <p class="text-lg font-semibold text-white group-hover:text-blue-400 transition-colors">anacaya331@gmail.com</p>
+                <p class="text-base sm:text-lg font-semibold text-white group-hover:text-blue-400 transition-colors break-all">anacaya331@gmail.com</p>
             </a>
             <div class="p-8 rounded-3xl bg-[#0a0a0a] border border-white/5">
                 <div class="w-12 h-12 mx-auto mb-6 flex items-center justify-center rounded-xl bg-gray-500/5 border border-white/10 text-gray-400">
@@ -172,10 +242,6 @@
     <footer class="py-10 border-t border-white/5 px-6 text-center text-gray-600 text-sm">
         &copy; 2026 Andrei Jullian Nacaya. Built with Code and Coffee.
     </footer>
-
-    <button class="fixed bottom-8 right-8 w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition z-50">
-        💬
-    </button>
 
     <script src="js/main.js"></script>
 </body>
