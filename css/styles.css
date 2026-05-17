@@ -33,6 +33,12 @@ body {
     100% { transform: translateX(-50%); }
 }
 
+/* --- 3D Carousel Perspective Root Stage --- */
+#carousel-container {
+    perspective: 1200px;
+    transform-style: preserve-3d;
+}
+
 /* --- 3D Carousel Transition Tokens --- */
 .carousel-card {
     transition: transform 650ms cubic-bezier(0.25, 1, 0.5, 1), 
@@ -41,53 +47,93 @@ body {
                 border-color 650ms ease,
                 box-shadow 650ms ease;
     will-change: transform, opacity;
+    transform-style: preserve-3d;
 }
 
 /* Desktop Themed Stack Rules Matrix */
 .card-center {
-    transform: translateX(0) scale(1) rotateY(0deg);
+    transform: translateX(0) scale(1) translateZ(50px) rotateY(0deg);
     z-index: 30;
     opacity: 1;
-    box-shadow: 0 20px 40px -15px rgba(37, 99, 235, 0.3);
+    box-shadow: 0 25px 50px -12px rgba(37, 99, 235, 0.25);
 }
 .card-left {
-    transform: translateX(-105%) scale(0.8) rotateY(25deg);
+    transform: translateX(-85%) scale(0.8) translateZ(-100px) rotateY(20deg);
     z-index: 20;
-    opacity: 0.35;
+    opacity: 0.4;
 }
 .card-right {
-    transform: translateX(105%) scale(0.8) rotateY(-25deg);
+    transform: translateX(85%) scale(0.8) translateZ(-100px) rotateY(-20deg);
     z-index: 20;
-    opacity: 0.35;
+    opacity: 0.4;
 }
 .card-back {
-    transform: translateX(0) scale(0.6) rotateY(0deg);
+    transform: translateX(0) scale(0.6) translateZ(-300px) rotateY(0deg);
     z-index: 10;
     opacity: 0;
     pointer-events: none;
 }
 
+/* Custom Headline Pulse Build */
+.headline-fade {
+    animation: pulseGlow 4s ease-in-out infinite;
+}
+@keyframes pulseGlow {
+    0%, 100% { text-shadow: 0 0 0px rgba(255,255,255,0); }
+    50% { text-shadow: 0 0 30px rgba(37, 99, 235, 0.2); }
+}
+
+/* Update section layout from full height to multi-row dynamic viewport bounds */
+#projects {
+    height: auto !important;
+}
+
+/* Interactive item alignment inside the integrated project archive */
+#archive-grid img {
+    will-change: opacity;
+}
+
+/* Custom Modal Animation Transitions */
+#project-modal {
+    will-change: opacity, backdrop-filter;
+}
+#modal-content {
+    will-change: transform, opacity;
+}
+
+/* Custom scrollbar optimization for right specification details tracking track */
+#modal-content div::-webkit-scrollbar {
+    width: 4px;
+}
+#modal-content div::-webkit-scrollbar-track {
+    background: transparent;
+}
+#modal-content div::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 99px;
+}
+
 /* Mobile Fallback Matrix */
 @media (max-width: 768px) {
     .card-center {
-        transform: translateX(0) scale(1);
+        transform: translateX(0) scale(1) translateZ(0);
         opacity: 1;
         z-index: 30;
     }
     .card-left {
-        transform: translateX(-100%);
+        transform: translateX(-100%) scale(0.8);
         opacity: 0;
         z-index: 10;
         pointer-events: none;
     }
     .card-right {
-        transform: translateX(100%);
+        transform: translateX(100%) scale(0.8);
         opacity: 0;
         z-index: 10;
         pointer-events: none;
     }
     .card-back {
-        transform: translateX(0) scale(0.9);
+        transform: translateX(0) scale(0.7);
         opacity: 0;
         z-index: 5;
         pointer-events: none;
