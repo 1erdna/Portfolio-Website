@@ -1,0 +1,352 @@
+/*
+ * HOME REFINEMENT — preview branch only
+ * Quiet cinematic styling; appended after intro.css and polish-preview.css.
+ * This file is intentionally independent so the approved design stays intact.
+ */
+:root { --home-accent: #a9c6ed; }
+
+#home.reference-home {
+    background: radial-gradient(ellipse 54% 64% at 50% 46%, #15191e 0%, #0b0d10 50%, #050609 100%);
+}
+
+/* Visual presence: a balanced portrait, with clear facial features retained
+   beneath the particle layer after the assembly settles. */
+.reference-home .ref-portrait {
+    width: min(66vw, 85svh, 890px);
+    bottom: -5%;
+}
+.reference-home .ref-portrait img {
+    opacity: .56;
+    filter: grayscale(1) brightness(1.13) contrast(1.12);
+    -webkit-mask-image: radial-gradient(ellipse 74% 83% at 50% 45%,
+        #000 27%, rgba(0,0,0,.93) 54%, transparent 96%);
+    mask-image: radial-gradient(ellipse 74% 83% at 50% 45%,
+        #000 27%, rgba(0,0,0,.93) 54%, transparent 96%);
+}
+.reference-home .ref-portrait.particles-ready img {
+    opacity: .48;
+}
+.reference-home .ref-portrait.particles-ready canvas {
+    opacity: .65;
+}
+/* Hide the studio backdrop while the photo is being isolated in JS.
+   Its alpha-cutout is what allows the dark page background to show through. */
+.reference-home .ref-portrait.portrait-cutout-pending img {
+    visibility: hidden !important;
+}
+.reference-home .ref-portrait.portrait-cutout-ready img {
+    background: transparent;
+}
+/* Rare fallback when the source cannot be processed: constrain the backdrop
+   to the portrait area rather than exposing the full rectangular photo. */
+.reference-home .ref-portrait.portrait-cutout-unavailable img {
+    opacity: .24;
+    -webkit-mask-image: radial-gradient(ellipse 43% 60% at 50% 43%, black 20%, transparent 100%);
+    mask-image: radial-gradient(ellipse 43% 60% at 50% 43%, black 20%, transparent 100%);
+}
+/* Keep the name and CTAs readable without hiding the portrait entirely. */
+.reference-home::after {
+    background: linear-gradient(to top,
+            #050609 0%, rgba(5,6,9,.9) 5%, rgba(5,6,9,.44) 17%,
+            rgba(5,6,9,.03) 37%, transparent 70%),
+        linear-gradient(to bottom, rgba(5,6,9,.3), transparent 18%);
+}
+
+/* Hierarchy: identity first, dramatic hero title second, clear actions third. */
+.reference-home .ref-hero-content {
+    bottom: clamp(54px, 8.4vh, 100px);
+}
+.reference-home .ref-identity {
+    position: relative;
+    margin: 0 0 clamp(14px, 1.9vw, 27px) .35vw;
+    font-size: clamp(.64rem, .82vw, .83rem);
+    line-height: 1.5;
+    font-weight: 700;
+    letter-spacing: .19em;
+    color: #e6ebf3;
+    text-transform: uppercase;
+}
+.reference-home .ref-identity span {
+    margin-left: .65em;
+    color: #9cabc0;
+    font-weight: 550;
+}
+.reference-home .ref-title {
+    letter-spacing: -.069em;
+    font-size: clamp(3.6rem, 13.7vw, 15.3rem);
+    background: linear-gradient(to bottom, #626973 5%, #515b69 57%, #354a68 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.reference-home .ref-subline {
+    padding-top: clamp(18px, 2.3vw, 30px);
+    gap: 12px 26px;
+}
+.reference-home .ref-subline p {
+    color: #eef2f8;
+}
+.reference-home .ref-subline p em {
+    color: #c1cbd8;
+}
+.reference-home .ref-home-actions a:first-child {
+    color: #e7f0ff;
+    border-bottom-color: #8daedc;
+}
+.reference-home .ref-home-actions a:hover,
+.reference-home .ref-home-actions a:focus-visible {
+    color: #fff;
+    border-bottom-color: #fff;
+}
+
+/* Professional navigation with subtle active states and an opaque scrolled bar. */
+nav.ref-nav {
+    padding: 19px clamp(20px, 3.8vw, 65px);
+    min-height: 70px;
+    align-items: center;
+    background: transparent;
+    transition: background-color 230ms ease, border-color 230ms ease;
+    border-bottom: 1px solid transparent;
+}
+nav.ref-nav.is-scrolled,
+nav.ref-nav.is-menu-open {
+    background: #0a0d12;
+    border-color: rgba(169,183,205,.1);
+}
+nav.ref-nav .ref-nav-brand {
+    letter-spacing: .12em;
+    font-size: .75rem;
+    color: #edf1f7;
+}
+nav.ref-nav .ref-nav-links {
+    gap: clamp(14px, 2vw, 32px);
+}
+nav.ref-nav .ref-nav-links a {
+    font-size: .67rem;
+    letter-spacing: .09em;
+    font-weight: 650;
+}
+nav.ref-nav .ref-nav-links a::after {
+    background: #9cb9e2;
+    height: 1px;
+    bottom: 2px;
+}
+
+/* A clear skip control is available during the first seconds only. */
+.ref-skip-intro {
+    display: none;
+    position: absolute;
+    z-index: 60;
+    top: 72px;
+    right: clamp(20px, 3.8vw, 65px);
+    padding: 10px 0;
+    color: #b5bed0;
+    font: 600 .72rem/1.2 Inter, sans-serif;
+    letter-spacing: .05em;
+    border: 0;
+    border-bottom: 1px solid rgba(169,187,214,.4);
+    background: transparent;
+    cursor: pointer;
+}
+html.intro-enabled .ref-skip-intro {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    animation: home-skip-in 280ms ease 230ms both;
+}
+.ref-skip-intro:hover,
+.ref-skip-intro:focus-visible { color: #fff; border-bottom-color: #fff; }
+.ref-skip-intro:focus-visible,
+.ref-menu-toggle:focus-visible {
+    outline: 2px solid var(--home-accent);
+    outline-offset: 5px;
+}
+@keyframes home-skip-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Faster single-play sequence: dot, gathered NACAYA, title and portrait.
+   The original 5–8-second staging is replaced with a roughly 4-second reveal. */
+html.intro-enabled .reference-home .ref-intro-dot {
+    animation: ref-dot 720ms ease 80ms both;
+}
+html.intro-enabled .reference-home .ref-assembly span {
+    animation: ref-letters 1570ms cubic-bezier(.22,1,.36,1) calc(var(--delay) - 1060ms) both;
+}
+html.intro-enabled .reference-home .ref-title {
+    animation: ref-title-reveal 800ms cubic-bezier(.22,1,.36,1) 1900ms both;
+}
+html.intro-enabled .reference-home .ref-identity {
+    animation: ref-fade-in 440ms ease 1970ms both;
+}
+html.intro-enabled .reference-home .ref-subline {
+    animation: ref-fade-in 500ms ease 2450ms both;
+}
+@keyframes home-photo-reveal {
+    from { opacity: 0; }
+    to { opacity: .56; }
+}
+html.intro-enabled .reference-home .ref-portrait img {
+    animation: home-photo-reveal 900ms ease 1950ms both;
+}
+html.intro-enabled nav.ref-nav {
+    animation: ref-fade-in 470ms ease 2550ms both;
+}
+
+/* Mobile: one compact menu instead of squeezing five links into a thin row. */
+.ref-menu-toggle { display: none; }
+@media (max-width: 900px) {
+    .reference-home .ref-portrait {
+        width: min(90vw, 81svh, 680px);
+        bottom: 0;
+    }
+    .reference-home .ref-hero-content { bottom: 12%; }
+    .reference-home .ref-title { font-size: clamp(3.15rem, 13.25vw, 8.1rem); }
+}
+
+@media (max-width: 700px) {
+    nav.ref-nav {
+        padding: 13px 19px;
+        min-height: 65px;
+        align-items: center;
+        gap: 10px;
+    }
+    nav.ref-nav .ref-nav-brand {
+        white-space: nowrap;
+        max-width: none;
+        font-size: .73rem;
+    }
+    .ref-menu-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        color: #e1e7f1;
+        background: none;
+        border: 0;
+        padding: 10px 2px 10px 12px;
+        margin-left: auto;
+        font: 600 .74rem Inter, sans-serif;
+        cursor: pointer;
+    }
+    .ref-menu-bars {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        justify-content: center;
+        width: 18px;
+        height: 17px;
+    }
+    .ref-menu-bars > span {
+        display: block;
+        width: 100%;
+        height: 1.5px;
+        background: currentColor;
+        border-radius: 9px;
+        transition: transform 200ms ease;
+    }
+    .ref-nav.is-menu-open .ref-menu-bars > span:first-child { transform: translateY(3.25px) rotate(45deg); }
+    .ref-nav.is-menu-open .ref-menu-bars > span:last-child { transform: translateY(-3.25px) rotate(-45deg); }
+    nav.ref-nav .ref-nav-links {
+        position: absolute;
+        top: 65px;
+        left: 0;
+        right: 0;
+        z-index: 52;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: stretch;
+        gap: 0;
+        padding: 8px 20px 19px;
+        background: #0a0d12;
+        border-bottom: 1px solid rgba(169,183,205,.17);
+        box-shadow: 0 20px 35px rgba(0,0,0,.42);
+        visibility: hidden;
+        pointer-events: none;
+        opacity: 0;
+        transform: translateY(-7px);
+        transition: opacity 200ms ease, transform 200ms ease, visibility 200ms;
+    }
+    nav.ref-nav.is-menu-open .ref-nav-links {
+        visibility: visible;
+        pointer-events: auto;
+        opacity: 1;
+        transform: translateY(0);
+    }
+    nav.ref-nav .ref-nav-links a {
+        padding: 13px 5px;
+        font-size: .83rem;
+        letter-spacing: .035em;
+        border-bottom: 1px solid rgba(200,210,229,.07);
+    }
+    nav.ref-nav .ref-nav-links a::after { display: none; }
+    .ref-skip-intro { top: 72px; right: 19px; }
+}
+
+@media (max-width: 520px) {
+    #home.reference-home { min-height: max(620px, 100svh); }
+    .reference-home .ref-portrait {
+        width: min(116vw, 76svh, 540px);
+        bottom: 14%;
+    }
+    .reference-home .ref-portrait img { filter: grayscale(1) brightness(1.04) contrast(1.14); }
+    .reference-home .ref-portrait.particles-ready img { opacity: .44; }
+    .reference-home .ref-portrait.particles-ready canvas { opacity: .6; }
+    .reference-home .ref-hero-content {
+        left: 4%;
+        right: 4%;
+        bottom: clamp(46px, 9vh, 85px);
+    }
+    .reference-home .ref-identity {
+        margin: 0 0 14px;
+        font-size: .61rem;
+        letter-spacing: .095em;
+    }
+    .reference-home .ref-identity span {
+        display: block;
+        margin: 4px 0 0;
+        font-size: .56rem;
+        letter-spacing: .13em;
+    }
+    .reference-home .ref-title {
+        font-size: clamp(2.65rem, 12.9vw, 5.75rem);
+        letter-spacing: -.072em;
+    }
+    .reference-home .ref-subline {
+        align-items: flex-start;
+        gap: 12px;
+        padding-top: 16px;
+    }
+    .reference-home .ref-subline p {
+        width: 100%;
+        font-size: .88rem;
+    }
+    .reference-home .ref-home-actions {
+        flex-wrap: nowrap;
+        gap: 24px;
+        justify-content: flex-start;
+    }
+    .reference-home .ref-home-actions a { padding: 7px 0; font-size: .78rem; }
+}
+
+@media (max-height: 580px) and (min-width: 701px) {
+    .reference-home .ref-portrait { width: min(42vw, 84svh, 590px); bottom: -7%; }
+    .reference-home .ref-hero-content { bottom: 42px; }
+    .reference-home .ref-identity { margin-bottom: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reference-home .ref-identity,
+    .reference-home .ref-title,
+    .reference-home .ref-subline,
+    .reference-home .ref-portrait img,
+    nav.ref-nav { animation: none !important; }
+    .reference-home .ref-intro-dot,
+    .reference-home .ref-assembly,
+    .ref-skip-intro { display: none !important; }
+    .ref-menu-bars > span,
+    nav.ref-nav .ref-nav-links { transition: none; }
+}
