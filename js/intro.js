@@ -101,8 +101,66 @@
             };
             window.addEventListener("scroll", onScroll, { passive: true });
         }
-        if (reduced) return;
+        /*
+         * Remove the studio background BEFORE displaying/sampling the portrait.
+         * It is a nearly uniform light gray and otherwise creates a visible
+         * rectangle in the dark hero. Keep the original repository image intact.
+         */
+        function isolatePortrait() {
+            if (!photo.naturalWidth || !photo.naturalHeight) return;
+            try {
+                const mat = document.createElement("canvas");
+                mat.width = photo.naturalWidth;
+                mat.height = photo.naturalHeight;
+                const matCtx = mat.getContext("2d", { willReadFrequently: true });
+                if (!matCtx) throw new Error("No image canvas");
+                matCtx.drawImage(photo, 0, 0);
+                const data = matCtx.getImageData(0, 0, mat.width, mat.height);
+                const pixels = data.data;
+                const w = mat.width, h = mat.height;
+                const corners = [
+                    [Math.round(w*.03), Math.round(h*.04)],
+                    [Math.round(w*.96), Math.round(h*.04)],
+                    [Math.round(w*.03), Math.round(h*.2)],
+                    [Math.round(w*.96), Math.round(h*.2)]
+                ];
+                const bg = [0,0,0];
+                for (const [x,y] of corners) {
+                    const k = (y * w + x) * 4;
+                    for (let c=0;c<3;c++) bg[c] += pixels[k+c] / corners.length;
+                }
+                let transparent = 0;
+                for (let k = 0; k < pixels.length; k += 4) {
+                    const d = Math.hypot(
+                        pixels[k] - bg[0], pixels[k+1] - bg[1],
+                        pixels[k+2] - bg[2]
+                    );
+                    const v = Math.max(0, Math.min(1, (d - 13) / 32));
+                    const alpha = v * v * (3 - 2 * v);
+                    pixels[k+3] = Math.round(pixels[k+3] * alpha);
+                    if (alpha < .045) transparent++;
+                }
+                // The mask should remove a significant part of the photo.
+                if (transparent < w*h*.1) throw new Error("Background not uniform");
+                matCtx.putImageData(data, 0, 0);
+                photo.addEventListener("load", () => {
+                    stage.classList.add("portrait-cutout-ready");
+                    stage.classList.remove("portrait-cutout-pending");
+                    if (!reduced && context) build();
+                }, { once: true });
+                photo.src = mat.toDataURL("image/png");
+            } catch (_) {
+                stage.classList.remove("portrait-cutout-pending");
+                stage.classList.add("portrait-cutout-unavailable");
+                if (!reduced && context) build();
+            }
+        }
 
+        if (reduced) {
+            if (photo.complete && photo.naturalWidth) isolatePortrait();
+            else photo.addEventListener("load", isolatePortrait, { once: true });
+            return;
+        }
         context = canvas.getContext("2d", { alpha: true });
         if (!context) return;
 
@@ -146,8 +204,9 @@
                 for (let x = step; x < sample.width - step; x += step) {
                     const offset = (y * sample.width + x) * 4;
                     const r = pixels[offset], g = pixels[offset + 1], b = pixels[offset + 2];
-                    const difference = Math.hypot(245 - r, 245 - g, 245 - b);
-                    const density = clamp((difference - 14) / 96);
+                    // The cutout alpha, not a guess from pixel brightness, drives dots.
+                    const density = pixels[offset + 3] / 255;
+                    if (density < .055) continue;
                     const seed = x * 97 + y * 137;
                     const faceRegion = y < sample.height * .66 && y > sample.height * .16 &&
                         x > sample.width * .2 && x < sample.width * .8;
@@ -164,7 +223,7 @@
                         startY: -height * (.12 + random(seed + 2) * 1.1),
                         delay: random(seed + 3) * 380,
                         size: (window.innerWidth < 700 ? .86 : .95) + random(seed + 4) * .9,
-                        alpha: (.48 + density * .52) * edgeFade,
+                        alpha: (.48 + density * .52) * edgeFade * density,
                         tone: r + g + b < 285 ? 3 : skinTone && random(seed + 5) > .45 ? 2 :
                             random(seed + 6) > .51 ? 0 : 1
                     });
@@ -238,11 +297,8 @@
             resizeTimer = window.setTimeout(build, 200);
         }, { passive: true });
 
-        if (photo.complete) {
-            if (photo.naturalWidth) build();
-        } else {
-            photo.addEventListener("load", build, { once: true });
-        }
+        if (photo.complete && photo.naturalWidth) isolatePortrait();
+        else photo.addEventListener("load", isolatePortrait, { once: true });
     }
 
     if (document.readyState === "loading") {
