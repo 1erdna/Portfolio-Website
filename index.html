@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Andrei Jullian Nacaya | Portfolio</title>
+    <script>
+        if ((!location.hash || location.hash === "#home") &&
+            !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            document.documentElement.classList.add("intro-enabled");
+        }
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -15,23 +21,41 @@
 
     <div class="grain-container"></div>
 
-    <nav class="nacaya-nav fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 p-1 glass rounded-full shadow-2xl w-[90%] max-w-md sm:w-auto">
-        <div class="px-4 py-2 bg-blue-600/20 text-blue-400 rounded-full font-bold text-xs">AJN</div>
-        <div class="flex gap-1 px-2">
-            <a href="#home" class="px-3 py-2 text-xs sm:text-sm hover:text-blue-400 transition">Home</a>
-            <a href="#about" class="px-3 py-2 text-xs sm:text-sm hover:text-blue-400 transition">About</a>
-            <a href="#projects" class="px-3 py-2 text-xs sm:text-sm hover:text-blue-400 transition">Projects</a>
-            <a href="#stack" class="px-3 py-2 text-xs sm:text-sm hover:text-blue-400 transition">Stack</a>
-            <a href="#contact" class="px-3 py-2 text-xs sm:text-sm hover:text-blue-400 transition">Contact</a>
+    <nav class="ref-nav" aria-label="Primary navigation">
+        <a class="ref-nav-brand" href="#home">ANDREI NACAYA</a>
+        <div class="ref-nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#projects">Projects</a>
+            <a href="#stack">Stack</a>
+            <a href="#contact">Contact</a>
         </div>
     </nav>
 
-    <section id="home" class="hero-wordmark-landing" aria-label="Nacaya — portfolio homepage">
-        <div class="wordmark-stage">
-            <h1 class="wordmark-title">NACAYA</h1>
-            <span class="wordmark-dot" aria-hidden="true"></span>
+    <section id="home" class="reference-home" aria-label="Andrei Nacaya portfolio introduction">
+        <div class="ref-assembly" aria-hidden="true">
+            <span style="--sx:-31vw;--sy:-22vh;--rot:-72deg;--delay:1550ms">N</span>
+            <span style="--sx:12vw;--sy:-40vh;--rot:53deg;--delay:1730ms">A</span>
+            <span style="--sx:-20vw;--sy:30vh;--rot:82deg;--delay:1850ms">C</span>
+            <span style="--sx:25vw;--sy:21vh;--rot:-42deg;--delay:1700ms">A</span>
+            <span style="--sx:-9vw;--sy:-32vh;--rot:105deg;--delay:1990ms">Y</span>
+            <span style="--sx:38vw;--sy:-10vh;--rot:-69deg;--delay:1820ms">A</span>
         </div>
-        <a class="wordmark-scroll" href="#about">Scroll to explore <span aria-hidden="true">↓</span></a>
+        <span class="ref-intro-dot" aria-hidden="true"></span>
+
+        <div class="ref-portrait" aria-hidden="true">
+            <img id="ref-portrait-image" src="images/andrei-portrait.webp"
+                 alt="" width="436" height="533" decoding="async" fetchpriority="high">
+            <canvas id="ref-particles"></canvas>
+        </div>
+
+        <div class="ref-hero-content">
+            <h1 class="ref-title">PORTFOLIO</h1>
+            <div class="ref-subline">
+                <p>Full-Stack Web &amp; Mobile <em>Developer</em></p>
+                <a href="#contact">Contact ↗</a>
+            </div>
+        </div>
     </section>
 
     <section id="about" class="py-32 px-6 max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-center">
