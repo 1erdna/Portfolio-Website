@@ -1,0 +1,194 @@
+/* Lightweight motion layer: visual-only enhancements, no third-party library. */
+:root {
+    --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+}
+
+#about, #projects, #stack, #contact {
+    scroll-margin-top: 6rem;
+}
+
+/* A fine progress line and a clear location cue in the floating navigation. */
+.scroll-progress {
+    position: fixed;
+    inset: 0 auto auto 0;
+    z-index: 45;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, #1d4ed8, #60a5fa);
+    transform: scaleX(0);
+    transform-origin: left center;
+    pointer-events: none;
+}
+
+nav.fixed {
+    animation: nav-enter 700ms var(--motion-ease) both;
+}
+
+nav a[href^="#"] {
+    position: relative;
+}
+
+nav a[href^="#"]::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    bottom: 3px;
+    height: 2px;
+    border-radius: 99px;
+    background: #60a5fa;
+    opacity: 0;
+    transition: left 260ms var(--motion-ease), right 260ms var(--motion-ease), opacity 260ms ease;
+}
+
+nav a[aria-current="location"] {
+    color: #60a5fa;
+}
+
+nav a[aria-current="location"]::after,
+nav a[href^="#"]:hover::after,
+nav a[href^="#"]:focus-visible::after {
+    left: 12px;
+    right: 12px;
+    opacity: 1;
+}
+
+/* Stagger the first screen instead of animating every word independently. */
+#home {
+    animation: grid-drift 34s linear infinite;
+}
+
+#home > .absolute:first-child {
+    animation: ambient-float 11s ease-in-out infinite alternate;
+}
+
+#home > h1 {
+    animation: hero-enter 900ms var(--motion-ease) 100ms both,
+               pulseGlow 4s ease-in-out 1200ms infinite;
+}
+
+#home > p:nth-of-type(1) {
+    animation: hero-enter 900ms var(--motion-ease) 230ms both;
+}
+
+#home > p:nth-of-type(2) {
+    animation: hero-enter 900ms var(--motion-ease) 360ms both;
+}
+
+#home > div.flex.flex-col {
+    animation: hero-enter 900ms var(--motion-ease) 490ms both;
+}
+
+#home > .absolute.bottom-10 {
+    animation: hero-enter 900ms var(--motion-ease) 700ms both;
+}
+
+/* Reveal only once when a section enters the viewport. */
+.motion-ready .reveal-on-scroll {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0);
+    transition:
+        opacity 780ms var(--motion-ease),
+        transform 780ms var(--motion-ease);
+    transition-delay: var(--reveal-delay, 0ms);
+}
+
+.motion-ready .reveal-on-scroll.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}
+
+/* Small, purposeful hover responses on cards and project previews. */
+#stack .glass,
+#contact a.group,
+#archive-grid > div {
+    transition:
+        transform 350ms var(--motion-ease),
+        border-color 350ms ease,
+        background-color 350ms ease,
+        box-shadow 350ms ease;
+}
+
+#stack .glass:hover,
+#contact a.group:hover,
+#archive-grid > div:hover {
+    transform: translate3d(0, -5px, 0);
+    box-shadow: 0 16px 36px -22px rgba(59, 130, 246, 0.34);
+}
+
+#archive-grid > div img {
+    transition: transform 400ms var(--motion-ease), opacity 300ms ease;
+}
+
+#archive-grid > div:hover img {
+    transform: scale(1.035);
+}
+
+.carousel-card.card-center:hover {
+    box-shadow: 0 28px 60px -12px rgba(37, 99, 235, 0.35);
+}
+
+@keyframes nav-enter {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes hero-enter {
+    from { opacity: 0; transform: translate3d(0, 24px, 0); }
+    to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes ambient-float {
+    from { transform: translate3d(-18px, 10px, 0) scale(0.96); }
+    to { transform: translate3d(20px, -18px, 0) scale(1.08); }
+}
+
+@keyframes grid-drift {
+    from { background-position: 0 0; }
+    to { background-position: 40px 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+
+    nav.fixed,
+    #home,
+    #home > .absolute:first-child,
+    #home > h1,
+    #home > p:nth-of-type(1),
+    #home > p:nth-of-type(2),
+    #home > div.flex.flex-col,
+    #home > .absolute.bottom-10,
+    .marquee-track {
+        animation: none !important;
+    }
+
+    .motion-ready .reveal-on-scroll,
+    .motion-ready .reveal-on-scroll.is-visible {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    #stack .glass,
+    #contact a.group,
+    #archive-grid > div,
+    #archive-grid > div img,
+    .carousel-card,
+    #project-modal,
+    #modal-content {
+        transition-duration: 0.01ms !important;
+    }
+
+    #stack .glass:hover,
+    #contact a.group:hover,
+    #archive-grid > div:hover,
+    #archive-grid > div:hover img {
+        transform: none;
+    }
+}
