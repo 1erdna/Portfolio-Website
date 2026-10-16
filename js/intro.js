@@ -1,5 +1,8 @@
-/* NACAYA reference intro: native canvas particle portrait and timed name reveal.
-   No video background or third-party animation library. */
+/*
+ * Cinematic Home — single-play, approximately four-second intro.
+ * Particles are only an enhancement; the original photo remains visible
+ * if Canvas is unavailable or the visitor prefers reduced motion.
+ */
 (() => {
     "use strict";
 
@@ -7,188 +10,238 @@
         const root = document.documentElement;
         const hero = document.querySelector("#home.reference-home");
         const stage = document.querySelector(".ref-portrait");
-        const image = document.getElementById("ref-portrait-image");
+        const photo = document.getElementById("ref-portrait-image");
         const canvas = document.getElementById("ref-particles");
         const nav = document.querySelector(".ref-nav");
-        if (!hero || !stage || !image || !canvas) return;
+        const menu = document.querySelector(".ref-menu-toggle");
+        const menuLinks = document.getElementById("ref-nav-links");
+        const skipButton = document.querySelector(".ref-skip-intro");
+        if (!hero || !stage || !photo || !canvas || !nav) return;
 
         const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        const play = !reduced && root.classList.contains("intro-enabled");
-        const animationStart = performance.now();
+        const hasIntro = !reduced && root.classList.contains("intro-enabled");
+        const began = performance.now();
+        const timeline = { particles: 1950, finish: 3950 };
+        let finished = !hasIntro;
+        let dots = [];
+        let context = null;
+        let width = 0;
+        let height = 0;
+        let raf = 0;
+        let lastPaint = 0;
+        let settled = false;
+        let isVisible = true;
 
-        // The original site remains fully navigable while the intro is running.
-        // Scrolling or using a deep link ends the intro without locking the page.
-        let introFinished = !play;
-        function finishIntro() {
-            if (introFinished) return;
-            introFinished = true;
-            root.classList.remove("intro-enabled");
-            if (nav) nav.inert = false;
+        // Always keep navigation accessible for deep links and reduced motion.
+        nav.inert = hasIntro;
+        const updateNav = () => nav.classList.toggle("is-scrolled", window.scrollY > 28);
+        updateNav();
+        window.addEventListener("scroll", updateNav, { passive: true });
+
+        // Collapsible mobile navigation, with keyboard and outside-click support.
+        function closeMenu() {
+            if (!menu) return;
+            nav.classList.remove("is-menu-open");
+            menu.setAttribute("aria-expanded", "false");
+            menu.setAttribute("aria-label", "Open navigation menu");
         }
-        if (play) {
-            if (nav) nav.inert = true;
-            // Navigation becomes clickable once it visibly arrives.
-            window.setTimeout(() => { if (nav) nav.inert = false; }, 5750);
-            window.setTimeout(finishIntro, 8200);
+        if (menu && menuLinks) {
+            menu.addEventListener("click", () => {
+                const opening = !nav.classList.contains("is-menu-open");
+                nav.classList.toggle("is-menu-open", opening);
+                menu.setAttribute("aria-expanded", String(opening));
+                menu.setAttribute("aria-label", opening ? "Close navigation menu" : "Open navigation menu");
+            });
+            menuLinks.querySelectorAll("a").forEach(a => a.addEventListener("click", closeMenu));
+            document.addEventListener("keydown", event => {
+                if (event.key === "Escape" && nav.classList.contains("is-menu-open")) {
+                    closeMenu();
+                    menu.focus();
+                }
+            });
+            document.addEventListener("pointerdown", event => {
+                if (!nav.contains(event.target)) closeMenu();
+            });
+            window.addEventListener("resize", () => {
+                if (window.innerWidth > 700) closeMenu();
+            }, { passive: true });
+        }
+
+        function stop() {
+            if (raf) cancelAnimationFrame(raf);
+            raf = 0;
+        }
+
+        function showFinal() {
+            if (!context || !dots.length) return;
+            render(1);
+            stage.classList.add("particles-ready");
+            settled = true;
+            stop();
+        }
+
+        function finishIntro() {
+            if (finished) return;
+            finished = true;
+            root.classList.remove("intro-enabled");
+            nav.inert = false;
+            showFinal();
+        }
+
+        if (hasIntro) {
+            // Navigation is usable as soon as the header has appeared.
+            window.setTimeout(() => { nav.inert = false; }, 2900);
+            window.setTimeout(finishIntro, timeline.finish);
+            skipButton?.addEventListener("click", finishIntro);
             const onScroll = () => {
-                if (window.scrollY > 90) {
+                if (window.scrollY > 75) {
                     finishIntro();
                     window.removeEventListener("scroll", onScroll);
                 }
             };
             window.addEventListener("scroll", onScroll, { passive: true });
         }
-
         if (reduced) return;
-        const ctx = canvas.getContext("2d", { alpha: true });
-        if (!ctx) return;
 
-        const colors = ["#e7eef8", "#b8c9df", "#f4f6fc", "#8fa4c1"];
-        let dots = [];
-        let w = 0, h = 0;
-        let frame = 0, previous = 0, assembled = false, inView = true;
+        context = canvas.getContext("2d", { alpha: true });
+        if (!context) return;
 
-        function rand(seed) {
+        const palette = ["#dce6f6", "#a7bbd4", "#f1f4fa", "#7391b9"];
+        function random(seed) {
             let n = (seed + 0x6d2b79f5) | 0;
             n = Math.imul(n ^ (n >>> 15), n | 1);
             n ^= n + Math.imul(n ^ (n >>> 7), n | 61);
             return ((n ^ (n >>> 14)) >>> 0) / 4294967296;
         }
+        const clamp = v => Math.max(0, Math.min(1, v));
 
         function build() {
             const rect = stage.getBoundingClientRect();
-            w = Math.round(rect.width);
-            h = Math.round(rect.height);
-            if (w < 60 || h < 60 || image.naturalWidth < 20) return;
+            width = Math.round(rect.width);
+            height = Math.round(rect.height);
+            if (width < 80 || height < 100 || !photo.naturalWidth) return;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = Math.round(width * dpr);
+            canvas.height = Math.round(height * dpr);
+            context.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-            const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-            canvas.width = Math.round(w * pixelRatio);
-            canvas.height = Math.round(h * pixelRatio);
-            ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+            const sample = document.createElement("canvas");
+            sample.width = photo.naturalWidth;
+            sample.height = photo.naturalHeight;
+            const sampleContext = sample.getContext("2d", { willReadFrequently: true });
+            if (!sampleContext) return;
+            sampleContext.drawImage(photo, 0, 0);
 
-            const sampling = document.createElement("canvas");
-            sampling.width = image.naturalWidth;
-            sampling.height = image.naturalHeight;
-            const sampleCtx = sampling.getContext("2d", { willReadFrequently: true });
-            if (!sampleCtx) return;
-            sampleCtx.drawImage(image, 0, 0);
-            let rgba;
+            let pixels;
             try {
-                rgba = sampleCtx.getImageData(0, 0, sampling.width, sampling.height).data;
+                pixels = sampleContext.getImageData(0, 0, sample.width, sample.height).data;
             } catch (_) {
-                return; // Static portrait remains available.
+                // Static portrait is deliberately retained if pixels cannot be read.
+                return;
             }
 
-            const step = window.innerWidth < 600 ? 4 : 3; // retain fine sampling for facial features
-            const list = [];
-            for (let y = step; y < sampling.height - step; y += step) {
-                for (let x = step; x < sampling.width - step; x += step) {
-                    const idx = (y * sampling.width + x) * 4;
-                    const r = rgba[idx], g = rgba[idx + 1], b = rgba[idx + 2];
-                    const brightness = (r + g + b) / 3;
-                    const deviation = Math.hypot(245 - r, 245 - g, 245 - b);
-                    // Keep face, clothes and hair; omit the pale studio background.
-                    const density = Math.max(0, Math.min(1, (deviation - 18) / 103));
+            const step = window.innerWidth < 700 ? 4 : 3;
+            const results = [];
+            for (let y = step; y < sample.height - step; y += step) {
+                for (let x = step; x < sample.width - step; x += step) {
+                    const offset = (y * sample.width + x) * 4;
+                    const r = pixels[offset], g = pixels[offset + 1], b = pixels[offset + 2];
+                    const difference = Math.hypot(245 - r, 245 - g, 245 - b);
+                    const density = clamp((difference - 14) / 96);
                     const seed = x * 97 + y * 137;
-                    // Emphasize the face without filling the light studio background.
-                    const faceRegion = y < sampling.height * .68 &&
-                        x > sampling.width * .2 && x < sampling.width * .8;
-                    const skinTone = faceRegion && r > g * 1.045 &&
-                        g > b * .97 && brightness > 88 && brightness < 234;
-                    if (rand(seed) > density * (skinTone ? 1 : .88)) continue;
+                    const faceRegion = y < sample.height * .66 && y > sample.height * .16 &&
+                        x > sample.width * .2 && x < sample.width * .8;
+                    const skinTone = faceRegion && r > g * 1.045 && g >= b * .96 &&
+                        (r + g + b) / 3 > 86;
+                    if (random(seed) > density * (skinTone ? 1 : .9)) continue;
 
-                    const px = x / sampling.width * w;
-                    const py = y / sampling.height * h;
-                    // Feather the far edges for a softly disappearing silhouette.
-                    const edge = Math.max(0, 1 - Math.pow(Math.abs(x / sampling.width - .5) / .58, 4));
-                    list.push({
-                        x: px, y: py,
-                        sx: px + (rand(seed + 1) - .5) * w * 1.45,
-                        sy: -rand(seed + 2) * h * 1.35 - h * .12,
-                        delay: rand(seed + 3) * 1100,
-                        radius: (window.innerWidth < 600 ? .9 : 1.03) + rand(seed + 4) * .95,
-                        alpha: (.37 + density * .63) * edge,
-                        tone: brightness < 95 ? 3 : skinTone && rand(seed + 5) > .55 ? 2 : rand(seed + 6) > .55 ? 0 : 1
+                    const targetX = x / sample.width * width;
+                    const targetY = y / sample.height * height;
+                    const edgeFade = clamp((.49 - Math.abs(x / sample.width - .5)) / .13);
+                    results.push({
+                        x: targetX, y: targetY,
+                        startX: targetX + (random(seed + 1) - .5) * width * 1.35,
+                        startY: -height * (.12 + random(seed + 2) * 1.1),
+                        delay: random(seed + 3) * 380,
+                        size: (window.innerWidth < 700 ? .86 : .95) + random(seed + 4) * .9,
+                        alpha: (.48 + density * .52) * edgeFade,
+                        tone: r + g + b < 285 ? 3 : skinTone && random(seed + 5) > .45 ? 2 :
+                            random(seed + 6) > .51 ? 0 : 1
                     });
                 }
             }
-
-            dots = list;
+            dots = results;
+            settled = false;
+            stop();
             if (!dots.length) return;
-            assembled = false;
-            if (frame) cancelAnimationFrame(frame);
-            frame = 0;
-            previous = 0;
-            if (inView && !document.hidden) start();
+            if (!hasIntro || finished || performance.now() - began > timeline.finish) {
+                showFinal();
+            } else if (isVisible && !document.hidden) {
+                raf = requestAnimationFrame(tick);
+            }
         }
 
-        function draw(now) {
-            ctx.clearRect(0, 0, w, h);
-            const elapsed = play && !introFinished ? now - animationStart - 4250 : 5000;
-
-            // Fewer state changes than assigning color and opacity per dot.
-            for (let tone = 0; tone < colors.length; tone++) {
-                ctx.fillStyle = colors[tone];
+        function render(progress, now = 0) {
+            context.clearRect(0, 0, width, height);
+            // Group by tone so large numbers of particles don't constantly change color.
+            for (let tone = 0; tone < palette.length; tone++) {
+                context.fillStyle = palette[tone];
                 for (const dot of dots) {
                     if (dot.tone !== tone) continue;
-                    const t = Math.max(0, Math.min(1, (elapsed - dot.delay) / 1700));
-                    if (t <= 0) continue;
-                    const eased = 1 - Math.pow(1 - t, 3);
-                    const x = dot.sx + (dot.x - dot.sx) * eased;
-                    const y = dot.sy + (dot.y - dot.sy) * eased;
-                    ctx.globalAlpha = dot.alpha * Math.min(1, t * 3);
-                    ctx.fillRect(x, y, dot.radius, dot.radius);
+                    const local = clamp((progress * 1650 - dot.delay) / 1150);
+                    if (local <= 0) continue;
+                    const ease = 1 - Math.pow(1 - local, 3);
+                    const x = dot.startX + (dot.x - dot.startX) * ease;
+                    const y = dot.startY + (dot.y - dot.startY) * ease;
+                    context.globalAlpha = dot.alpha * Math.min(1, local * 3);
+                    context.fillRect(x, y, dot.size, dot.size);
                 }
             }
-            ctx.globalAlpha = 1;
-
-            if (!stage.classList.contains("particles-ready") && elapsed > 0) {
-                stage.classList.add("particles-ready");
-            }
-            return elapsed > 3000; // settle at a crisp, static final frame
+            context.globalAlpha = 1;
         }
 
         function tick(now) {
-            frame = 0;
-            if (!inView || document.hidden) return;
-            if (now - previous >= 40) {  // up to ~25 fps
-                previous = now;
-                assembled = draw(now);
+            raf = 0;
+            if (!isVisible || document.hidden || settled) return;
+            if (now - lastPaint >= 34) {
+                lastPaint = now;
+                const elapsed = now - began - timeline.particles;
+                const fraction = clamp(elapsed / 1650);
+                if (elapsed > 0) {
+                    stage.classList.add("particles-ready");
+                    render(fraction, now);
+                }
+                if (fraction >= 1) {
+                    settled = true;
+                    return; // Leave the assembled portrait static; no endless animation.
+                }
             }
-            if (!assembled) frame = requestAnimationFrame(tick);
+            raf = requestAnimationFrame(tick);
         }
-        function start() {
-            if (!frame && dots.length && !assembled && inView && !document.hidden) {
-                frame = requestAnimationFrame(tick);
-            }
-        }
-        function stop() {
-            if (frame) cancelAnimationFrame(frame);
-            frame = 0;
-        }
+
         if ("IntersectionObserver" in window) {
             new IntersectionObserver(([entry]) => {
-                inView = entry.isIntersecting;
-                if (inView) start();
-                else stop();
+                isVisible = entry.isIntersecting;
+                if (!isVisible) stop();
+                else if (!settled && dots.length && !raf) raf = requestAnimationFrame(tick);
             }, { threshold: .01 }).observe(hero);
         }
         document.addEventListener("visibilitychange", () => {
             if (document.hidden) stop();
-            else start();
+            else if (!settled && dots.length && isVisible && !raf) {
+                raf = requestAnimationFrame(tick);
+            }
         });
-        let pendingResize;
+        let resizeTimer;
         window.addEventListener("resize", () => {
-            clearTimeout(pendingResize);
-            pendingResize = setTimeout(() => {
-                if (image.naturalWidth) build();
-            }, 150);
+            window.clearTimeout(resizeTimer);
+            resizeTimer = window.setTimeout(build, 200);
         }, { passive: true });
 
-        if (image.complete) {
-            if (image.naturalWidth) build();
+        if (photo.complete) {
+            if (photo.naturalWidth) build();
         } else {
-            image.addEventListener("load", build, { once: true });
+            photo.addEventListener("load", build, { once: true });
         }
     }
 
