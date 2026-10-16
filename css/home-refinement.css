@@ -27,7 +27,23 @@
     opacity: .48;
 }
 .reference-home .ref-portrait.particles-ready canvas {
-    opacity: .65;
+    opacity: .82;
+}
+/* The particle veil is only present during the intro. Once assembled,
+   dissolve it and reveal the original isolated portrait in crisp detail. */
+.reference-home .ref-portrait img {
+    transition: opacity 850ms cubic-bezier(.22, 1, .36, 1),
+                filter 850ms cubic-bezier(.22, 1, .36, 1);
+}
+.reference-home .ref-portrait canvas {
+    transition: opacity 850ms cubic-bezier(.22, 1, .36, 1);
+}
+.reference-home .ref-portrait.intro-complete img {
+    opacity: .88;
+    filter: grayscale(1) brightness(1.045) contrast(1.13);
+}
+.reference-home .ref-portrait.intro-complete canvas {
+    opacity: 0;
 }
 /* Hide the studio backdrop while the photo is being isolated in JS.
    Its alpha-cutout is what allows the dark page background to show through. */
@@ -294,7 +310,12 @@ html.intro-enabled nav.ref-nav {
     }
     .reference-home .ref-portrait img { filter: grayscale(1) brightness(1.04) contrast(1.14); }
     .reference-home .ref-portrait.particles-ready img { opacity: .44; }
-    .reference-home .ref-portrait.particles-ready canvas { opacity: .6; }
+    .reference-home .ref-portrait.particles-ready canvas { opacity: .82; }
+    .reference-home .ref-portrait.intro-complete img {
+        opacity: .84;
+        filter: grayscale(1) brightness(1.02) contrast(1.12);
+    }
+    .reference-home .ref-portrait.intro-complete canvas { opacity: 0; }
     .reference-home .ref-hero-content {
         left: 4%;
         right: 4%;
@@ -339,6 +360,8 @@ html.intro-enabled nav.ref-nav {
 }
 
 @media (prefers-reduced-motion: reduce) {
+    .reference-home .ref-portrait img,
+    .reference-home .ref-portrait canvas { transition: none !important; }
     .reference-home .ref-identity,
     .reference-home .ref-title,
     .reference-home .ref-subline,
