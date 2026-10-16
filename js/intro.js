@@ -152,7 +152,7 @@
                 render(now);
             }
             // The intro finishes once, rather than running a continuous heavy particle effect.
-            if (!playingIntro || now - sequenceStart < 4450) {
+            if (playingIntro && now - sequenceStart < 4450) {
                 raf = window.requestAnimationFrame(tick);
             }
         }
