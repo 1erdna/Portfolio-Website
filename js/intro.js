@@ -27,6 +27,8 @@
         }
         if (play) {
             if (nav) nav.inert = true;
+            // Navigation becomes clickable once it visibly arrives.
+            window.setTimeout(() => { if (nav) nav.inert = false; }, 5750);
             window.setTimeout(finishIntro, 8200);
             window.addEventListener("scroll", () => {
                 if (window.scrollY > 90) finishIntro();
