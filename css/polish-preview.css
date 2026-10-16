@@ -1,0 +1,166 @@
+/* PREVIEW BRANCH ONLY — targeted visual refinements, no global redesign.
+   Layered after intro.css so every change can be discarded without touching main. */
+
+:root { --polish-blue: #94b8e7; }
+
+/* 1. Portrait: preserve the pixel assembly, but let the face remain recognizable.
+   The static image supports the details the tiny canvas particles can't express. */
+.reference-home .ref-portrait {
+    width: min(67vw, 84svh, 880px);
+    bottom: -4%;
+}
+
+.reference-home .ref-portrait img {
+    opacity: .55;
+    filter: grayscale(1) brightness(.98) contrast(1.2);
+    -webkit-mask-image: radial-gradient(ellipse 76% 84% at 50% 45%,
+        #000 30%, rgba(0, 0, 0, .88) 54%, transparent 96%);
+    mask-image: radial-gradient(ellipse 76% 84% at 50% 45%,
+        #000 30%, rgba(0, 0, 0, .88) 54%, transparent 96%);
+}
+
+.reference-home .ref-portrait.particles-ready img { opacity: .38; }
+.reference-home .ref-portrait.particles-ready canvas { opacity: .96; }
+
+/* A subtle bottom fade, leaving the portrait visible and the subtitle legible. */
+.reference-home::after {
+    background:
+        linear-gradient(0deg, rgba(5, 6, 8, .82) 0%, rgba(5,6,8,.24) 17%, transparent 39%),
+        linear-gradient(180deg, rgba(5,6,8,.3), transparent 20%);
+}
+
+/* 2. Typography: less crushed tracking and a restrained steel-gray contrast. */
+.reference-home .ref-title {
+    letter-spacing: -.073em;
+    background: linear-gradient(180deg, #494b50 7%, #41464f 58%, #344358 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.reference-home .ref-hero-content {
+    bottom: clamp(58px, 9vh, 100px);
+}
+
+.reference-home .ref-subline {
+    padding-top: clamp(18px, 2.4vw, 29px);
+    gap: 18px 26px;
+    position: relative;
+    z-index: 6;
+}
+
+.reference-home .ref-subline p {
+    letter-spacing: -.018em;
+    font-size: clamp(1rem, 1.5vw, 1.3rem);
+    line-height: 1.5;
+}
+
+/* 3. Header: the brand is a plain wordmark, not a selected navigation tab. */
+nav.ref-nav {
+    padding-top: 23px;
+    padding-bottom: 23px;
+    gap: 24px;
+}
+nav.ref-nav .ref-nav-brand {
+    color: #e6eaf0 !important;
+    text-decoration: none !important;
+    font-size: .78rem;
+    line-height: 1.3;
+    letter-spacing: .13em;
+    font-weight: 750;
+}
+nav.ref-nav .ref-nav-brand::after {
+    content: none !important;
+    display: none !important;
+}
+nav.ref-nav .ref-nav-links { align-items: center; }
+nav.ref-nav .ref-nav-links a {
+    color: #9fa6b0;
+    letter-spacing: .095em;
+    transition: color 180ms ease;
+}
+nav.ref-nav .ref-nav-links a:hover,
+nav.ref-nav .ref-nav-links a:focus-visible,
+nav.ref-nav .ref-nav-links a[aria-current="location"] { color: #e9edf4; }
+
+nav.ref-nav .ref-nav-links a::after {
+    height: 1px;
+    background: #a9b6c8;
+    bottom: 0;
+}
+
+/* 4. Two understated links instead of adding big pill buttons. */
+.reference-home .ref-home-actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: clamp(17px, 2.3vw, 34px);
+    flex-wrap: wrap;
+}
+.reference-home .ref-home-actions a {
+    color: #bdc5d0;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(197,210,230,.27);
+    padding: 9px 1px;
+    font-size: .82rem;
+    font-weight: 550;
+    line-height: 1.4;
+    white-space: nowrap;
+    transition: color 180ms ease, border-color 180ms ease;
+}
+.reference-home .ref-home-actions a:first-child {
+    color: #dce9fc;
+    border-color: rgba(147,181,228,.54);
+}
+.reference-home .ref-home-actions a:hover,
+.reference-home .ref-home-actions a:focus-visible {
+    color: #fff;
+    border-color: #fff;
+}
+.reference-home .ref-home-actions a:focus-visible,
+nav.ref-nav a:focus-visible {
+    outline: 2px solid var(--polish-blue);
+    outline-offset: 4px;
+}
+
+/* 5. The intro scripts settle into a static final composition.
+   Respect small devices and OS accessibility preferences. */
+@media (max-width: 800px) {
+    .reference-home .ref-portrait {
+        width: min(92vw, 80svh, 680px);
+        bottom: 0;
+    }
+    .reference-home .ref-hero-content { bottom: 12%; }
+    nav.ref-nav { padding-top: 18px; padding-bottom: 18px; }
+}
+
+@media (max-width: 520px) {
+    nav.ref-nav { align-items: flex-start; padding: 18px 15px; gap: 12px; }
+    nav.ref-nav .ref-nav-brand { font-size: .7rem; letter-spacing: .07em; }
+    nav.ref-nav .ref-nav-links { gap: 7px 11px; justify-content: flex-end; }
+    nav.ref-nav .ref-nav-links a { font-size: .58rem; }
+    .reference-home .ref-portrait {
+        width: min(120vw, 76svh, 575px);
+        bottom: 13%;
+    }
+    .reference-home .ref-portrait img {
+        filter: grayscale(1) brightness(.87) contrast(1.18);
+    }
+    .reference-home .ref-portrait.particles-ready img { opacity: .31; }
+    .reference-home .ref-title {
+        letter-spacing: -.076em;
+        font-size: clamp(2.8rem, 13vw, 5.7rem);
+    }
+    .reference-home .ref-hero-content { bottom: 12%; }
+    .reference-home .ref-subline { align-items: flex-start; padding-top: 18px; gap: 14px; }
+    .reference-home .ref-subline p { font-size: .87rem; }
+    .reference-home .ref-home-actions { justify-content: flex-start; gap: 22px; }
+    .reference-home .ref-home-actions a { font-size: .78rem; padding: 6px 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reference-home .ref-portrait img,
+    .reference-home .ref-portrait canvas,
+    .reference-home .ref-home-actions a,
+    nav.ref-nav .ref-nav-links a { transition: none !important; }
+}

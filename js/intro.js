@@ -43,7 +43,7 @@
         const ctx = canvas.getContext("2d", { alpha: true });
         if (!ctx) return;
 
-        const colors = ["#dce5f5", "#a9b9d0", "#e2e8f3", "#6e8cae"];
+        const colors = ["#e7eef8", "#b8c9df", "#f4f6fc", "#8fa4c1"];
         let dots = [];
         let w = 0, h = 0;
         let frame = 0, previous = 0, assembled = false, inView = true;
@@ -79,7 +79,7 @@
                 return; // Static portrait remains available.
             }
 
-            const step = window.innerWidth < 600 ? 4 : 3;
+            const step = window.innerWidth < 600 ? 4 : 3; // retain fine sampling for facial features
             const list = [];
             for (let y = step; y < sampling.height - step; y += step) {
                 for (let x = step; x < sampling.width - step; x += step) {
@@ -88,9 +88,14 @@
                     const brightness = (r + g + b) / 3;
                     const deviation = Math.hypot(245 - r, 245 - g, 245 - b);
                     // Keep face, clothes and hair; omit the pale studio background.
-                    const density = Math.max(0, Math.min(1, (deviation - 23) / 115));
+                    const density = Math.max(0, Math.min(1, (deviation - 18) / 103));
                     const seed = x * 97 + y * 137;
-                    if (rand(seed) > density * .85) continue;
+                    // Emphasize the face without filling the light studio background.
+                    const faceRegion = y < sampling.height * .68 &&
+                        x > sampling.width * .2 && x < sampling.width * .8;
+                    const skinTone = faceRegion && r > g * 1.045 &&
+                        g > b * .97 && brightness > 88 && brightness < 234;
+                    if (rand(seed) > density * (skinTone ? 1 : .88)) continue;
 
                     const px = x / sampling.width * w;
                     const py = y / sampling.height * h;
@@ -101,9 +106,9 @@
                         sx: px + (rand(seed + 1) - .5) * w * 1.45,
                         sy: -rand(seed + 2) * h * 1.35 - h * .12,
                         delay: rand(seed + 3) * 1100,
-                        radius: .55 + rand(seed + 4) * .9,
-                        alpha: (.26 + density * .74) * edge,
-                        tone: brightness < 95 ? 3 : rand(seed + 5) > .67 ? 0 : rand(seed + 6) > .6 ? 1 : 2
+                        radius: (window.innerWidth < 600 ? .9 : 1.03) + rand(seed + 4) * .95,
+                        alpha: (.37 + density * .63) * edge,
+                        tone: brightness < 95 ? 3 : skinTone && rand(seed + 5) > .55 ? 2 : rand(seed + 6) > .55 ? 0 : 1
                     });
                 }
             }
@@ -140,7 +145,7 @@
             if (!stage.classList.contains("particles-ready") && elapsed > 0) {
                 stage.classList.add("particles-ready");
             }
-            return elapsed > 3100;
+            return elapsed > 3000; // settle at a crisp, static final frame
         }
 
         function tick(now) {
