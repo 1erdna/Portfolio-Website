@@ -17,6 +17,7 @@
         const menuLinks = document.getElementById("ref-nav-links");
         const skipButton = document.querySelector(".ref-skip-intro");
         if (!hero || !stage || !photo || !canvas || !nav) return;
+        stage.classList.add("portrait-cutout-pending");
 
         const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         const hasIntro = !reduced && root.classList.contains("intro-enabled");
@@ -136,7 +137,18 @@
                         pixels[k+2] - bg[2]
                     );
                     const v = Math.max(0, Math.min(1, (d - 13) / 32));
-                    const alpha = v * v * (3 - 2 * v);
+                    let alpha = v * v * (3 - 2 * v);
+                    // Pale pink shirt can be almost as bright as the backdrop.
+                    // Preserve its chroma while still removing neutral-gray pixels.
+                    const y = Math.floor(k / 4 / w);
+                    if (y > h * .51) {
+                        const pink = Math.min(
+                            pixels[k] - pixels[k+1],
+                            pixels[k+2] - pixels[k+1]
+                        );
+                        const cloth = Math.max(0, Math.min(1, (pink - 5) / 9));
+                        alpha = Math.max(alpha, .99 * cloth * cloth * (3 - 2 * cloth));
+                    }
                     pixels[k+3] = Math.round(pixels[k+3] * alpha);
                     if (alpha < .045) transparent++;
                 }
@@ -162,7 +174,12 @@
             return;
         }
         context = canvas.getContext("2d", { alpha: true });
-        if (!context) return;
+        if (!context) {
+            // Even without a particle canvas, keep the portrait background-free.
+            if (photo.complete && photo.naturalWidth) isolatePortrait();
+            else photo.addEventListener("load", isolatePortrait, { once: true });
+            return;
+        }
 
         const palette = ["#dce6f6", "#a7bbd4", "#f1f4fa", "#7391b9"];
         function random(seed) {
