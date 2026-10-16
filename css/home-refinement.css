@@ -29,6 +29,21 @@
 .reference-home .ref-portrait.particles-ready canvas {
     opacity: .65;
 }
+/* Hide the studio backdrop while the photo is being isolated in JS.
+   Its alpha-cutout is what allows the dark page background to show through. */
+.reference-home .ref-portrait.portrait-cutout-pending img {
+    visibility: hidden !important;
+}
+.reference-home .ref-portrait.portrait-cutout-ready img {
+    background: transparent;
+}
+/* Rare fallback when the source cannot be processed: constrain the backdrop
+   to the portrait area rather than exposing the full rectangular photo. */
+.reference-home .ref-portrait.portrait-cutout-unavailable img {
+    opacity: .24;
+    -webkit-mask-image: radial-gradient(ellipse 43% 60% at 50% 43%, black 20%, transparent 100%);
+    mask-image: radial-gradient(ellipse 43% 60% at 50% 43%, black 20%, transparent 100%);
+}
 /* Keep the name and CTAs readable without hiding the portrait entirely. */
 .reference-home::after {
     background: linear-gradient(to top,
