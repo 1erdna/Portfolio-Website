@@ -108,6 +108,7 @@ nav a[href^="#"]:focus-visible::after {
 #contact a.group,
 #archive-grid > div {
     transition:
+        opacity 780ms var(--motion-ease),
         transform 350ms var(--motion-ease),
         border-color 350ms ease,
         background-color 350ms ease,
