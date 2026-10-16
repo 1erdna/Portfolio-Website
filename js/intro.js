@@ -23,7 +23,7 @@
         const sequenceStart = performance.now();
         if (playingIntro) {
             hero.classList.add("play-intro");
-            window.setTimeout(() => hero.classList.remove("play-intro"), 3700);
+            window.setTimeout(() => hero.classList.remove("play-intro"), 5200);
         }
 
         let points = [];
@@ -120,7 +120,7 @@
 
         function render(now) {
             context.clearRect(0, 0, width, height);
-            const elapsed = playingIntro ? now - sequenceStart - 1150 : 8000;
+            const elapsed = playingIntro ? now - sequenceStart - 2200 : 8000;
             const assembled = elapsed > 2800;
 
             // Group by shade to avoid a fillStyle change for every tiny point.
