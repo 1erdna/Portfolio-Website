@@ -30,9 +30,13 @@
             // Navigation becomes clickable once it visibly arrives.
             window.setTimeout(() => { if (nav) nav.inert = false; }, 5750);
             window.setTimeout(finishIntro, 8200);
-            window.addEventListener("scroll", () => {
-                if (window.scrollY > 90) finishIntro();
-            }, { passive: true, once: true });
+            const onScroll = () => {
+                if (window.scrollY > 90) {
+                    finishIntro();
+                    window.removeEventListener("scroll", onScroll);
+                }
+            };
+            window.addEventListener("scroll", onScroll, { passive: true });
         }
 
         if (reduced) return;
