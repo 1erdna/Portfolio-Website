@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="css/motion.css">
     <link rel="stylesheet" href="css/intro.css">
     <link rel="stylesheet" href="css/polish-preview.css">
+    <link rel="stylesheet" href="css/home-refinement.css">
 </head>
 <body class="bg-[#030303] text-white selection:bg-blue-500 overflow-x-hidden">
 
@@ -24,7 +25,12 @@
 
     <nav class="ref-nav" aria-label="Primary navigation">
         <a class="ref-nav-brand" href="#home">ANDREI NACAYA</a>
-        <div class="ref-nav-links">
+        <button class="ref-menu-toggle" type="button" aria-expanded="false"
+                aria-controls="ref-nav-links" aria-label="Open navigation menu">
+            <span class="ref-menu-label">Menu</span>
+            <span class="ref-menu-bars" aria-hidden="true"><span></span><span></span></span>
+        </button>
+        <div class="ref-nav-links" id="ref-nav-links">
             <a href="#home">Home</a>
             <a href="#about">About</a>
             <a href="#projects">Projects</a>
@@ -50,7 +56,10 @@
             <canvas id="ref-particles"></canvas>
         </div>
 
+        <button class="ref-skip-intro" type="button" aria-label="Skip the introduction animation">Skip intro <span aria-hidden="true">↗</span></button>
+
         <div class="ref-hero-content">
+            <p class="ref-identity">ANDREI JULLIAN NACAYA <span>— DEVELOPER PORTFOLIO</span></p>
             <h1 class="ref-title">PORTFOLIO</h1>
             <div class="ref-subline">
                 <p>Full-Stack Web &amp; Mobile <em>Developer</em></p>
