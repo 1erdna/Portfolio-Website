@@ -10,90 +10,82 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/motion.css">
     <link rel="stylesheet" href="css/intro.css">
+    <link rel="stylesheet" href="css/clean.css">
 </head>
 <body class="bg-[#030303] text-white selection:bg-blue-500 overflow-x-hidden">
 
     <div class="grain-container"></div>
 
-    <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 p-1 glass rounded-full shadow-2xl w-[90%] max-w-md sm:w-auto">
-        <div class="px-4 py-2 bg-blue-600/20 text-blue-400 rounded-full font-bold text-xs">AJN</div>
-        <div class="flex gap-1 px-2">
-            <a href="#home" class="px-3 py-2 text-xs sm:text-sm hover:text-blue-400 transition">Home</a>
-            <a href="#about" class="px-3 py-2 text-xs sm:text-sm hover:text-blue-400 transition">About</a>
-            <a href="#projects" class="px-3 py-2 text-xs sm:text-sm hover:text-blue-400 transition">Projects</a>
-            <a href="#stack" class="px-3 py-2 text-xs sm:text-sm hover:text-blue-400 transition">Stack</a>
-            <a href="#contact" class="px-3 py-2 text-xs sm:text-sm hover:text-blue-400 transition">Contact</a>
+    <nav class="site-nav" aria-label="Primary navigation">
+        <div class="site-nav-inner">
+            <a class="site-brand" href="#home" aria-label="Andrei Nacaya — Home">AJN<span>.</span></a>
+            <div class="site-nav-links">
+                <a href="#about">About</a>
+                <a href="#projects">Work</a>
+                <a href="#stack">Skills</a>
+                <a href="#contact">Contact</a>
+            </div>
         </div>
     </nav>
 
-    <section id="home" class="hero-cinematic" aria-label="Andrei Jullian Nacaya portfolio introduction">
+    <section id="home" class="hero-cinematic" aria-label="Andrei Jullian Nacaya — portfolio">
         <div class="hero-linework" aria-hidden="true"></div>
         <span class="hero-intro-mark" aria-hidden="true"></span>
         <span class="hero-intro-name" aria-hidden="true">ANDREI NACAYA</span>
 
-        <!-- Portrait is assembled from real image pixels; photo remains as a no-JS fallback. -->
         <div class="hero-visual" aria-hidden="true">
             <img id="hero-photo" class="hero-photo-fallback" src="images/andrei-portrait.webp"
                  alt="" width="436" height="533" fetchpriority="high" decoding="async">
             <canvas id="hero-particles" class="hero-particle-canvas"></canvas>
         </div>
 
-        <div class="hero-nameplate">
-            <span>Andrei Jullian Nacaya</span>
-            <span class="hero-availability">Design / Build / Improve</span>
-        </div>
-
         <div class="hero-copy">
-            <p class="hero-kicker">Creative developer portfolio</p>
+            <p class="hero-eyebrow">Andrei Jullian Nacaya</p>
             <h1 class="hero-title">PORTFOLIO</h1>
-            <div class="hero-footer-row">
-                <p class="hero-role">Full-Stack <em>Web &amp; Mobile Developer</em></p>
+            <div class="hero-bottom">
+                <div>
+                    <p class="hero-role">Full-Stack Web &amp; Mobile Developer</p>
+                    <p class="hero-summary">Designing and building practical digital experiences.</p>
+                </div>
                 <div class="hero-links">
-                    <a class="hero-link hero-link-primary" href="#projects">Explore Projects <span aria-hidden="true">↗</span></a>
-                    <a class="hero-link" href="#contact">Contact <span aria-hidden="true">→</span></a>
+                    <a class="hero-link hero-link-primary" href="#projects">View Projects ↗</a>
+                    <a class="hero-link" href="#contact">Get in Touch ↗</a>
                 </div>
             </div>
         </div>
-
-        <span class="hero-scroll-cue" aria-hidden="true">Scroll to explore ↓</span>
     </section>
 
-    <section id="about" class="py-32 px-6 max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-center">
-        <div class="lg:w-1/2">
-            <span class="bg-blue-900/30 text-blue-400 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest">About Me</span>
-            <h2 class="text-3xl md:text-5xl font-bold mt-6 mb-8 leading-tight">
-                Bridging the gap between <span class="text-blue-500 text-opacity-80">customer service</span> and <span class="text-indigo-400">clean code</span>.
-            </h2>
-            <p class="text-gray-400 text-base md:text-lg mb-8 leading-relaxed">
-                I'm a transitioner from the high-pressure hospitality industry to the world of Full-Stack development. My background as a barista and bartender taught me precision, efficiency, and how to deliver under stress—skills I now apply to building scalable web applications.
+    <section id="about" class="about-section px-6 max-w-7xl mx-auto flex flex-col lg:flex-row">
+        <div class="about-copy">
+            <p class="about-eyebrow">About me</p>
+            <h2>Thoughtful design. Practical development.</h2>
+            <p>
+                I bring a customer-first perspective from my hospitality background into software development.
+                I enjoy creating clear, responsive interfaces and building tools that make everyday tasks easier.
             </p>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 border-t border-white/10 pt-8">
-                <div>
-                    <h4 class="font-bold text-white mb-2">Specializations</h4>
-                    <p class="text-sm text-gray-400">UI/UX Design, Front-end Logic, Rapid Prototyping.</p>
-                </div>
-                <div>
-                    <h4 class="font-bold text-white mb-2">Certificates</h4>
-                    <p class="text-sm text-gray-400">IT Management Fundamentals 101, Python Programming 101, Strategic Project Management & Design Thinking, Web Development Workshop.</p>
-                </div>
-            </div>
+            <a class="about-inline-link" href="#contact">Let's connect <span aria-hidden="true">↗</span></a>
         </div>
-        <div class="lg:w-1/2 grid grid-cols-2 gap-4 bg-white/[0.02] p-4 sm:p-8 rounded-[40px] border border-white/5 w-full">
-            <div class="glass p-6 sm:p-10 rounded-3xl text-center">
-                <h3 class="text-3xl sm:text-4xl font-bold mb-2">100%</h3>
-                <p class="text-[10px] text-gray-500 uppercase tracking-widest">Growth Mindset</p>
+        <div class="about-details">
+            <div class="about-detail">
+                <span>01</span>
+                <div>
+                    <h3>What I focus on</h3>
+                    <p>Web and mobile development, UI/UX design, and rapid prototyping.</p>
+                </div>
             </div>
-            <div class="glass p-6 sm:p-10 rounded-3xl text-center">
-                <h3 class="text-3xl sm:text-4xl font-bold mb-2">5+</h3>
-                <p class="text-[10px] text-gray-500 uppercase tracking-widest">Certificates</p>
+            <div class="about-detail">
+                <span>02</span>
+                <div>
+                    <h3>How I work</h3>
+                    <p>Clarity, iteration, and user-centered problem solving.</p>
+                </div>
             </div>
-            <div class="glass p-6 sm:p-10 rounded-3xl text-center">
-                <h3 class="text-3xl sm:text-4xl font-bold mb-2">3+</h3>
-                <p class="text-[10px] text-gray-500 uppercase tracking-widest">Live Projects</p>
-            </div>
-            <div class="glass p-6 sm:p-10 rounded-3xl text-center">
-                <h3 class="text-3xl sm:text-4xl font-bold mb-2">24/7</h3>
-                <p class="text-[10px] text-gray-500 uppercase tracking-widest">Dedicated Learner</p>
+            <div class="about-detail">
+                <span>03</span>
+                <div>
+                    <h3>Continuous learning</h3>
+                    <p>Python programming, IT management, web development, and project management.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -124,10 +116,7 @@
             </div>
 
             <a id="project-marquee-link" href="#" class="group overflow-hidden border border-blue-500/20 bg-blue-950/20 backdrop-blur-sm py-3 px-6 rounded-full max-w-[180px] sm:max-w-xs flex items-center transition-all hover:border-blue-400 hover:shadow-[0_0_15px_rgba(37,99,235,0.2)]">
-                <div class="marquee-track flex whitespace-nowrap gap-4 font-['Anton'] tracking-wider text-xs uppercase text-blue-400 group-hover:text-blue-300">
-                    <span>VIEW LIVE ↗ &nbsp;&nbsp; VIEW LIVE ↗ &nbsp;&nbsp; VIEW LIVE ↗</span>
-                    <span aria-hidden="true">VIEW LIVE ↗ &nbsp;&nbsp; VIEW LIVE ↗ &nbsp;&nbsp; VIEW LIVE ↗</span>
-                </div>
+                <span class="text-xs font-semibold tracking-wide text-blue-300">View selected project ↗</span>
             </a>
         </div>
 
@@ -178,8 +167,8 @@
     </div>
 
     <section id="stack" class="py-32 px-6 max-w-7xl mx-auto">
-        <h2 class="text-4xl font-bold text-center mb-4">Technical Arsenal</h2>
-        <p class="text-gray-400 text-center mb-16">The tools and technologies I use to build solutions.</p>
+        <h2 class="text-4xl font-bold text-center mb-4">Tools &amp; Technologies</h2>
+        <p class="text-gray-400 text-center mb-16">A focused toolkit for practical web and mobile work.</p>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="glass p-8 rounded-3xl hover:border-blue-500/50 transition duration-500 group">
                 <div class="w-10 h-10 mb-6 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400 group-hover:scale-110 transition">💻</div>
@@ -223,7 +212,7 @@
     </section>
 
     <section id="contact" class="py-32 px-6 max-w-7xl mx-auto">
-        <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 text-white">Get In Touch</h2>
+        <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 text-white">Let’s Connect</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
             <a href="mailto:anacaya331@gmail.com" class="group p-8 rounded-3xl bg-[#0a0a0a] border border-white/5 hover:border-blue-500/50 transition-all duration-300">
                 <div class="w-12 h-12 mx-auto mb-6 flex items-center justify-center rounded-xl bg-blue-500/5 border border-blue-500/10 text-blue-400 group-hover:scale-110 group-hover:border-blue-500 group-hover:shadow-[0_0_20px_rgba(37,99,235,0.3)] transition-all duration-500">
@@ -250,7 +239,7 @@
     </section>
 
     <footer class="py-10 border-t border-white/5 px-6 text-center text-gray-600 text-sm">
-        &copy; 2026 Andrei Jullian Nacaya. Built with Code and Coffee.
+        &copy; 2026 Andrei Jullian Nacaya. Designed &amp; developed with care.
     </footer>
 
     <script src="js/main.js"></script>

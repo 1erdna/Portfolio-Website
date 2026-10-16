@@ -23,7 +23,7 @@
         const sequenceStart = performance.now();
         if (playingIntro) {
             hero.classList.add("play-intro");
-            window.setTimeout(() => hero.classList.remove("play-intro"), 5200);
+            window.setTimeout(() => hero.classList.remove("play-intro"), 3600);
         }
 
         let points = [];
@@ -73,7 +73,7 @@
                 return; // The normal static portrait remains visible.
             }
 
-            const step = window.innerWidth < 600 ? 5 : 4;
+            const step = window.innerWidth < 600 ? 6 : 5;
             const list = [];
             const sourceWidth = sampler.width;
             const sourceHeight = sampler.height;
@@ -88,7 +88,7 @@
                     const difference = Math.hypot(r - 244, g - 244, b - 244);
                     const density = Math.min(1, Math.max(0, (difference - 19) / 112));
                     const seed = x * 97 + y * 131;
-                    if (random(seed) > density) continue;
+                    if (random(seed) > density * .74) continue;
 
                     const targetX = (x / sourceWidth) * width;
                     const targetY = (y / sourceHeight) * height;
@@ -120,7 +120,7 @@
 
         function render(now) {
             context.clearRect(0, 0, width, height);
-            const elapsed = playingIntro ? now - sequenceStart - 2200 : 8000;
+            const elapsed = playingIntro ? now - sequenceStart - 1150 : 8000;
             const assembled = elapsed > 2800;
 
             // Group by shade to avoid a fillStyle change for every tiny point.
@@ -147,11 +147,14 @@
         function tick(now) {
             raf = 0;
             if (!inView || document.hidden || !loaded) return;
-            if (now - lastPaint >= 40) { // approximately 25 FPS, conservative on mobile
+            if (now - lastPaint >= 50) { // approximately 20 FPS, to keep CPU use restrained
                 lastPaint = now;
                 render(now);
             }
-            raf = window.requestAnimationFrame(tick);
+            // The intro finishes once, rather than running a continuous heavy particle effect.
+            if (playingIntro && now - sequenceStart < 4450) {
+                raf = window.requestAnimationFrame(tick);
+            }
         }
 
         function start() {
