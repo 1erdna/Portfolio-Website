@@ -176,6 +176,41 @@ nav.site-nav .site-nav-links a:focus-visible::after {
 }
 .about-detail p { margin: 0; color: var(--muted); font-size: .88rem; line-height: 1.75; }
 
+/* Reduce visual noise in the existing interactive project showcase. */
+#carousel-glow { opacity: .09 !important; }
+
+.carousel-card.card-center {
+    box-shadow: 0 22px 45px -24px rgba(29, 60, 112, .28);
+}
+.carousel-card.card-center:hover {
+    box-shadow: 0 22px 45px -24px rgba(29, 60, 112, .32);
+}
+#prev-btn, #next-btn {
+    border-color: var(--border);
+    background: #0b111c;
+    color: #b8c7df;
+    backdrop-filter: none;
+    box-shadow: none;
+}
+#prev-btn:hover, #next-btn:hover {
+    border-color: rgba(119,169,255,.35);
+    background: #131e31;
+    color: #eef4ff;
+    box-shadow: none;
+}
+#project-marquee-link {
+    border-color: var(--border);
+    background: #0b111c;
+    backdrop-filter: none;
+    box-shadow: none;
+    max-width: none;
+}
+#project-marquee-link:hover {
+    border-color: rgba(119,169,255,.35);
+    box-shadow: none;
+}
+#modal-content { border-color: var(--border); }
+
 /* A consistent scale and restrained neutral cards below the hero. */
 #projects { padding-top: 95px; padding-bottom: 110px; }
 #projects h3, #stack h2, #contact h2 { letter-spacing: -.045em; }
