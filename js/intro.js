@@ -73,12 +73,29 @@
             raf = 0;
         }
 
+        let portraitRevealTimer = 0;
+        function revealPortraitSoon(delay = hasIntro ? 520 : 0) {
+            if (stage.classList.contains("intro-complete") || portraitRevealTimer) return;
+            if (delay <= 0) {
+                stage.classList.add("intro-complete");
+            } else {
+                portraitRevealTimer = window.setTimeout(() => {
+                    portraitRevealTimer = 0;
+                    stage.classList.add("intro-complete");
+                }, delay);
+            }
+        }
+
         function showFinal() {
-            if (!context || !dots.length) return;
-            render(1);
-            stage.classList.add("particles-ready");
-            settled = true;
-            stop();
+            if (context && dots.length) {
+                render(1);
+                stage.classList.add("particles-ready");
+                settled = true;
+                stop();
+            }
+            // If the image is still loading or Canvas is unavailable, the
+            // cut-out photo still becomes fully visible when the intro ends.
+            revealPortraitSoon();
         }
 
         function finishIntro() {
@@ -169,6 +186,8 @@
         }
 
         if (reduced) {
+            // Never leave the dotted veil visible for reduced-motion visitors.
+            stage.classList.add("intro-complete");
             if (photo.complete && photo.naturalWidth) isolatePortrait();
             else photo.addEventListener("load", isolatePortrait, { once: true });
             return;
@@ -289,7 +308,10 @@
                 }
                 if (fraction >= 1) {
                     settled = true;
-                    return; // Leave the assembled portrait static; no endless animation.
+                    // Let the completed particle portrait breathe for a moment,
+                    // then cross-fade to the clear photograph. No looping canvas.
+                    revealPortraitSoon();
+                    return;
                 }
             }
             raf = requestAnimationFrame(tick);
