@@ -174,8 +174,12 @@ html.intro-enabled .reference-home .ref-title {
 html.intro-enabled .reference-home .ref-subline {
     animation: ref-fade-in 650ms ease 4900ms both;
 }
+@keyframes ref-photo-reveal {
+    from { opacity: 0; }
+    to { opacity: .26; }
+}
 html.intro-enabled .reference-home .ref-portrait img {
-    animation: ref-fade-in 1400ms ease 4650ms both;
+    animation: ref-photo-reveal 1400ms ease 4650ms both;
 }
 
 nav.ref-nav {
