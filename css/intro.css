@@ -273,20 +273,55 @@
     100% { opacity: 0; transform: translate(-50%,-50%) scale(13); }
 }
 
+
+.hero-cinematic .hero-intro-name {
+    display: none;
+}
+
+.hero-cinematic.play-intro .hero-intro-name {
+    display: block;
+    position: absolute;
+    z-index: 7;
+    top: 43%;
+    left: 50%;
+    width: max-content;
+    max-width: 94vw;
+    color: #e9effc;
+    font-size: clamp(2rem, 7.4vw, 7rem);
+    font-weight: 700;
+    letter-spacing: -.065em;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    pointer-events: none;
+    animation: intro-name-build 1650ms cubic-bezier(.22,1,.36,1) 1100ms both;
+}
+
+@keyframes intro-name-build {
+    0% { opacity: 0; transform: translate(-50%, -44%) scale(.93); filter: blur(6px); }
+    23%, 67% { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0); }
+    100% { opacity: 0; transform: translate(-50%, -55%) scale(1.015); filter: blur(2px); }
+}
+
+/* Keep the final image concealed until the particles can form it. */
+.hero-cinematic.play-intro .hero-photo-fallback {
+    opacity: 0;
+}
+
 .hero-cinematic.play-intro .hero-nameplate {
-    animation: intro-content-in 600ms ease-out 650ms both;
+    animation: intro-content-in 600ms ease-out 2300ms both;
 }
 .hero-cinematic.play-intro .hero-kicker {
-    animation: intro-content-in 550ms ease-out 1450ms both;
+    animation: intro-content-in 550ms ease-out 2570ms both;
 }
 .hero-cinematic.play-intro .hero-title {
-    animation: intro-title-in 1050ms cubic-bezier(.18,1,.36,1) 1520ms both;
+    animation: intro-title-in 1050ms cubic-bezier(.18,1,.36,1) 2710ms both;
 }
 .hero-cinematic.play-intro .hero-footer-row {
-    animation: intro-content-in 600ms ease-out 2180ms both;
+    animation: intro-content-in 600ms ease-out 3330ms both;
 }
 .hero-cinematic.play-intro .hero-scroll-cue {
-    animation: intro-content-in 700ms ease-out 2600ms both;
+    animation: intro-content-in 700ms ease-out 3850ms both;
 }
 
 @keyframes intro-content-in {
@@ -381,6 +416,6 @@
         transform: none;
         filter: none;
     }
-    .hero-cinematic .hero-intro-mark { display: none !important; }
+    .hero-cinematic .hero-intro-mark, .hero-cinematic .hero-intro-name { display: none !important; }
     .hero-cinematic .hero-link { transition: none; }
 }
