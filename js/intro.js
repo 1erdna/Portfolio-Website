@@ -124,54 +124,59 @@
          * It is a nearly uniform light gray and otherwise creates a visible
          * rectangle in the dark hero. Keep the original repository image intact.
          */
+        // A traced silhouette from the original 436×533 source portrait.
+        // A continuous alpha shape preserves the pale pink shirt and fine
+        // facial details; thresholding by color introduced holes and a halo.
+        // Kept separate from the particle animation / timing.
+        const portraitOutline = "M134,145 L128,153 L127,158 L125,160 L125,169 L137,200 L138,209 L136,211 L129,212 L127,216 L127,227 L132,235 L137,252 L142,258 L147,261 L150,273 L167,296 L171,311 L171,315 L169,316 L168,320 L168,330 L163,336 L160,336 L94,369 L80,378 L72,386 L60,408 L53,430 L51,432 L46,451 L45,460 L41,472 L37,504 L36,532 L413,532 L412,481 L402,428 L396,406 L380,389 L376,378 L369,377 L367,373 L356,364 L353,364 L349,360 L343,358 L335,352 L331,352 L323,346 L317,344 L313,340 L281,324 L271,311 L271,307 L268,301 L263,298 L263,294 L261,291 L261,276 L266,256 L268,254 L271,254 L277,248 L281,235 L281,230 L286,218 L286,207 L279,200 L270,200 L268,197 L270,156 L275,152 L274,148 L271,144 L262,140 L251,131 L245,128 L218,119 L195,118 L170,124 L156,131 L140,143 Z";
+
         function isolatePortrait() {
             if (!photo.naturalWidth || !photo.naturalHeight) return;
             try {
+                const width = photo.naturalWidth;
+                const height = photo.naturalHeight;
+                const outline = new Path2D(portraitOutline);
+
                 const mat = document.createElement("canvas");
-                mat.width = photo.naturalWidth;
-                mat.height = photo.naturalHeight;
-                const matCtx = mat.getContext("2d", { willReadFrequently: true });
+                mat.width = width;
+                mat.height = height;
+                const matCtx = mat.getContext("2d");
                 if (!matCtx) throw new Error("No image canvas");
                 matCtx.drawImage(photo, 0, 0);
-                const data = matCtx.getImageData(0, 0, mat.width, mat.height);
-                const pixels = data.data;
-                const w = mat.width, h = mat.height;
-                const corners = [
-                    [Math.round(w*.03), Math.round(h*.04)],
-                    [Math.round(w*.96), Math.round(h*.04)],
-                    [Math.round(w*.03), Math.round(h*.2)],
-                    [Math.round(w*.96), Math.round(h*.2)]
-                ];
-                const bg = [0,0,0];
-                for (const [x,y] of corners) {
-                    const k = (y * w + x) * 4;
-                    for (let c=0;c<3;c++) bg[c] += pixels[k+c] / corners.length;
-                }
-                let transparent = 0;
-                for (let k = 0; k < pixels.length; k += 4) {
-                    const d = Math.hypot(
-                        pixels[k] - bg[0], pixels[k+1] - bg[1],
-                        pixels[k+2] - bg[2]
-                    );
-                    const v = Math.max(0, Math.min(1, (d - 13) / 32));
-                    let alpha = v * v * (3 - 2 * v);
-                    // Pale pink shirt can be almost as bright as the backdrop.
-                    // Preserve its chroma while still removing neutral-gray pixels.
-                    const y = Math.floor(k / 4 / w);
-                    if (y > h * .51) {
-                        const pink = Math.min(
-                            pixels[k] - pixels[k+1],
-                            pixels[k+2] - pixels[k+1]
-                        );
-                        const cloth = Math.max(0, Math.min(1, (pink - 5) / 9));
-                        alpha = Math.max(alpha, .99 * cloth * cloth * (3 - 2 * cloth));
-                    }
-                    pixels[k+3] = Math.round(pixels[k+3] * alpha);
-                    if (alpha < .045) transparent++;
-                }
-                // The mask should remove a significant part of the photo.
-                if (transparent < w*h*.1) throw new Error("Background not uniform");
-                matCtx.putImageData(data, 0, 0);
+
+                // Trace a fully opaque person shape instead of making a
+                // color-by-color transparency estimate. This prevents
+                // interior gaps on the light-colored shirt and tie.
+                const stencil = document.createElement("canvas");
+                stencil.width = width;
+                stencil.height = height;
+                const maskCtx = stencil.getContext("2d");
+                if (!maskCtx) throw new Error("No matte canvas");
+                maskCtx.scale(width / 436, height / 533);
+                maskCtx.fillStyle = "#fff";
+                maskCtx.fill(outline);
+
+                // Erase ~1px of the outer border to remove the white fringe
+                // around hair and ears, then soften antialiasing slightly.
+                maskCtx.globalCompositeOperation = "destination-out";
+                maskCtx.strokeStyle = "#fff";
+                maskCtx.lineWidth = 2.6;
+                maskCtx.lineJoin = "round";
+                maskCtx.stroke(outline);
+                maskCtx.globalCompositeOperation = "source-over";
+
+                const softMatte = document.createElement("canvas");
+                softMatte.width = width;
+                softMatte.height = height;
+                const softCtx = softMatte.getContext("2d");
+                if (!softCtx) throw new Error("No feather canvas");
+                softCtx.filter = "blur(1.05px)";
+                softCtx.drawImage(stencil, 0, 0);
+
+                matCtx.globalCompositeOperation = "destination-in";
+                matCtx.drawImage(softMatte, 0, 0);
+                matCtx.globalCompositeOperation = "source-over";
+
                 photo.addEventListener("load", () => {
                     stage.classList.add("portrait-cutout-ready");
                     stage.classList.remove("portrait-cutout-pending");
@@ -185,7 +190,7 @@
             }
         }
 
-        if (reduced) {
+                if (reduced) {
             // Never leave the dotted veil visible for reduced-motion visitors.
             stage.classList.add("intro-complete");
             if (photo.complete && photo.naturalWidth) isolatePortrait();

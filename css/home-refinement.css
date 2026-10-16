@@ -39,8 +39,10 @@
     transition: opacity 850ms cubic-bezier(.22, 1, .36, 1);
 }
 .reference-home .ref-portrait.intro-complete img {
-    opacity: .88;
-    filter: grayscale(1) brightness(1.045) contrast(1.13);
+    /* Lower facial highlights slightly; the cutout remains recognizable
+       without competing with the main PORTFOLIO lettering. */
+    opacity: .83;
+    filter: grayscale(1) brightness(.9) contrast(1.1);
 }
 .reference-home .ref-portrait.intro-complete canvas {
     opacity: 0;
@@ -312,8 +314,8 @@ html.intro-enabled nav.ref-nav {
     .reference-home .ref-portrait.particles-ready img { opacity: .44; }
     .reference-home .ref-portrait.particles-ready canvas { opacity: .82; }
     .reference-home .ref-portrait.intro-complete img {
-        opacity: .84;
-        filter: grayscale(1) brightness(1.02) contrast(1.12);
+        opacity: .81;
+        filter: grayscale(1) brightness(.9) contrast(1.1);
     }
     .reference-home .ref-portrait.intro-complete canvas { opacity: 0; }
     .reference-home .ref-hero-content {
