@@ -193,3 +193,138 @@ nav a[href^="#"]:focus-visible::after {
         transform: none;
     }
 }
+
+/* --- Personal portrait: quietly animated editorial background --- */
+#home > h1,
+#home > p,
+#home > div.flex.flex-col {
+    position: relative;
+    z-index: 2;
+}
+
+#home > .absolute.bottom-10 {
+    z-index: 3;
+}
+
+/* The photo is softly masked so its studio background blends into the dark hero. */
+.hero-portrait {
+    position: absolute;
+    z-index: 1;
+    right: max(-4rem, -4vw);
+    bottom: -6%;
+    width: min(45vw, 560px);
+    aspect-ratio: 436 / 533;
+    pointer-events: none;
+    opacity: .85;
+    transform-origin: 50% 85%;
+    animation: portrait-entrance 1100ms var(--motion-ease) 180ms both,
+               portrait-drift 9s ease-in-out 1280ms infinite alternate;
+}
+
+.hero-portrait-halo {
+    position: absolute;
+    inset: 14% 3% 0;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at 55% 45%,
+        rgba(37, 99, 235, .28) 0,
+        rgba(30, 64, 175, .11) 44%,
+        transparent 72%);
+    filter: blur(30px);
+    animation: portrait-halo-breathe 7s ease-in-out infinite alternate;
+}
+
+.hero-portrait > img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    filter: grayscale(.2) contrast(1.12) brightness(.69);
+    -webkit-mask-image: radial-gradient(ellipse 70% 78% at 50% 45%,
+        #000 30%, rgba(0, 0, 0, .9) 51%, transparent 96%);
+    mask-image: radial-gradient(ellipse 70% 78% at 50% 45%,
+        #000 30%, rgba(0, 0, 0, .9) 51%, transparent 96%);
+}
+
+.hero-portrait-shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, #030303 0%, transparent 30%, transparent 75%, #030303 100%),
+                linear-gradient(0deg, #030303 0%, transparent 38%);
+    opacity: .58;
+}
+
+@keyframes portrait-entrance {
+    from { opacity: 0; transform: translate3d(30px, 28px, 0) scale(.97); }
+    to   { opacity: .85; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes portrait-drift {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-8px, -13px, 0); }
+}
+
+@keyframes portrait-halo-breathe {
+    from { opacity: .6; transform: scale(.98); }
+    to   { opacity: 1; transform: scale(1.07); }
+}
+
+/* Leave readable negative space beside the portrait on desktop. */
+@media (min-width: 1024px) {
+    #home > h1,
+    #home > p,
+    #home > div.flex.flex-col {
+        align-self: flex-start;
+        text-align: left;
+        margin-left: clamp(1rem, 5vw, 5.5rem);
+        margin-right: 0;
+    }
+
+    #home > h1 {
+        max-width: min(67vw, 830px);
+        font-size: clamp(3.5rem, 6.4vw, 6.5rem);
+        line-height: 1.06;
+    }
+
+    #home > p {
+        max-width: min(58vw, 700px);
+    }
+}
+
+@media (max-width: 1023px) {
+    .hero-portrait {
+        width: min(65vw, 410px);
+        right: -12%;
+        bottom: -2%;
+        opacity: .48;
+        animation-name: portrait-entrance-mobile, portrait-drift;
+    }
+
+    @keyframes portrait-entrance-mobile {
+        from { opacity: 0; transform: translate3d(20px, 20px, 0); }
+        to   { opacity: .48; transform: none; }
+    }
+}
+
+@media (max-width: 640px) {
+    .hero-portrait {
+        width: min(85vw, 360px);
+        right: -29%;
+        bottom: 2%;
+        opacity: .35;
+        animation-name: portrait-entrance-small, portrait-drift;
+    }
+    .hero-portrait > img { filter: grayscale(.2) contrast(1.12) brightness(.48); }
+    @keyframes portrait-entrance-small {
+        from { opacity: 0; transform: translate3d(20px, 20px, 0); }
+        to   { opacity: .35; transform: none; }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-portrait, .hero-portrait-halo {
+        animation: none !important;
+    }
+}
